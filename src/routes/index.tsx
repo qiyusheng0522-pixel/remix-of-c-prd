@@ -19,8 +19,10 @@ import {
   PlayCircle,
   X,
   ScanLine,
+  Send,
 } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
