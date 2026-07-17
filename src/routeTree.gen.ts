@@ -23,6 +23,7 @@ import { Route as MeIndexRouteImport } from './routes/me.index'
 import { Route as HmIndexRouteImport } from './routes/hm.index'
 import { Route as CircleIndexRouteImport } from './routes/circle.index'
 import { Route as StationWalletRouteImport } from './routes/station.wallet'
+import { Route as StationPickupRouteImport } from './routes/station.pickup'
 import { Route as StationGoodsRouteImport } from './routes/station.goods'
 import { Route as StationIdRouteImport } from './routes/station.$id'
 import { Route as PartnersIdRouteImport } from './routes/partners.$id'
@@ -218,6 +219,11 @@ const CircleIndexRoute = CircleIndexRouteImport.update({
 const StationWalletRoute = StationWalletRouteImport.update({
   id: '/station/wallet',
   path: '/station/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationPickupRoute = StationPickupRouteImport.update({
+  id: '/station/pickup',
+  path: '/station/pickup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StationGoodsRoute = StationGoodsRouteImport.update({
@@ -942,6 +948,7 @@ export interface FileRoutesByFullPath {
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
   '/station/goods': typeof StationGoodsRoute
+  '/station/pickup': typeof StationPickupRoute
   '/station/wallet': typeof StationWalletRoute
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
@@ -1083,6 +1090,7 @@ export interface FileRoutesByTo {
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
   '/station/goods': typeof StationGoodsRoute
+  '/station/pickup': typeof StationPickupRoute
   '/station/wallet': typeof StationWalletRoute
   '/circle': typeof CircleIndexRoute
   '/hm': typeof HmIndexRoute
@@ -1226,6 +1234,7 @@ export interface FileRoutesById {
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
   '/station/goods': typeof StationGoodsRoute
+  '/station/pickup': typeof StationPickupRoute
   '/station/wallet': typeof StationWalletRoute
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
@@ -1370,6 +1379,7 @@ export interface FileRouteTypes {
     | '/partners/$id'
     | '/station/$id'
     | '/station/goods'
+    | '/station/pickup'
     | '/station/wallet'
     | '/circle/'
     | '/hm/'
@@ -1511,6 +1521,7 @@ export interface FileRouteTypes {
     | '/partners/$id'
     | '/station/$id'
     | '/station/goods'
+    | '/station/pickup'
     | '/station/wallet'
     | '/circle'
     | '/hm'
@@ -1653,6 +1664,7 @@ export interface FileRouteTypes {
     | '/partners/$id'
     | '/station/$id'
     | '/station/goods'
+    | '/station/pickup'
     | '/station/wallet'
     | '/circle/'
     | '/hm/'
@@ -1777,6 +1789,7 @@ export interface RootRouteChildren {
   MeTeamRoute: typeof MeTeamRoute
   StationIdRoute: typeof StationIdRoute
   StationGoodsRoute: typeof StationGoodsRoute
+  StationPickupRoute: typeof StationPickupRoute
   StationWalletRoute: typeof StationWalletRoute
   HmIndexRoute: typeof HmIndexRoute
   MeIndexRoute: typeof MeIndexRoute
@@ -1882,6 +1895,13 @@ declare module '@tanstack/react-router' {
       path: '/station/wallet'
       fullPath: '/station/wallet'
       preLoaderRoute: typeof StationWalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/pickup': {
+      id: '/station/pickup'
+      path: '/station/pickup'
+      fullPath: '/station/pickup'
+      preLoaderRoute: typeof StationPickupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/station/goods': {
@@ -3079,6 +3099,7 @@ const rootRouteChildren: RootRouteChildren = {
   MeTeamRoute: MeTeamRoute,
   StationIdRoute: StationIdRoute,
   StationGoodsRoute: StationGoodsRoute,
+  StationPickupRoute: StationPickupRoute,
   StationWalletRoute: StationWalletRoute,
   HmIndexRoute: HmIndexRoute,
   MeIndexRoute: MeIndexRoute,
