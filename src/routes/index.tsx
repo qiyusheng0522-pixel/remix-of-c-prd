@@ -406,15 +406,47 @@ function HomePage() {
           `}</style>
 
 
-          {/* 唯一入口：AI 助手 */}
-          <button
-            onClick={() => navigate({ to: "/chat/xiaoqing" })}
-            className="mt-2 flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-bold text-foreground shadow-card active:scale-95"
+          {/* AI 输入框 · 首页直达 */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const q = aiInput.trim();
+              navigate({ to: "/chat/xiaoqing", search: q ? { message: q } : undefined });
+              setAiInput("");
+            }}
+            className="mt-2 w-full max-w-sm"
           >
-            <Sparkles className="h-4 w-4 text-primary" />
-            AI 助手 · 和我聊一聊
-          </button>
-          <p className="mt-1 text-[11px] text-muted-foreground">大模型驱动 · 24 小时在线陪伴</p>
+            <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 shadow-card focus-within:ring-2 focus-within:ring-primary/20">
+              <Sparkles className="h-5 w-5 shrink-0 text-primary" />
+              <input
+                value={aiInput}
+                onChange={(e) => setAiInput(e.target.value)}
+                placeholder="AI 助手 · 和我聊一聊"
+                className="flex-1 bg-transparent text-[15px] font-medium text-foreground outline-none placeholder:text-muted-foreground"
+              />
+              <button
+                type="button"
+                onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
+                aria-label="语音输入"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted active:scale-95"
+              >
+                <Mic className="h-4 w-4 text-foreground" />
+              </button>
+              <button
+                type="submit"
+                aria-label={aiInput.trim() ? "发送" : "拍照问蜻蜓"}
+                className={cn(
+                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full active:scale-95",
+                  aiInput.trim()
+                    ? "bg-primary text-primary-foreground shadow-card"
+                    : "bg-muted text-foreground",
+                )}
+              >
+                {aiInput.trim() ? <Send className="h-4 w-4" /> : <Camera className="h-4 w-4" />}
+              </button>
+            </div>
+            <p className="mt-1 text-center text-[11px] text-muted-foreground">大模型驱动 · 24 小时在线陪伴</p>
+          </form>
         </div>
       </div>
 
