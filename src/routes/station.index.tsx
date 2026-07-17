@@ -13,7 +13,11 @@ import {
   Utensils,
   Hospital,
   Check,
-
+  ShoppingBag,
+  HeartPulse,
+  CalendarCheck,
+  Package,
+  Plus,
 } from "lucide-react";
 import {
   Sheet,
@@ -120,7 +124,98 @@ function StationPage() {
             className="bg-white/25 text-white"
           />
         </div>
+
+        {/* 我的驿站钱包 · 大字醒目 */}
+        <button
+          onClick={() => setTab("mine")}
+          className="mt-5 flex w-full items-center justify-between rounded-2xl bg-white/20 p-4 backdrop-blur-md active:scale-[0.99]"
+        >
+          <div className="text-left">
+            <p className="text-sm opacity-90">我的驿站钱包</p>
+            <p className="mt-1 text-3xl font-bold">¥ 286</p>
+            <p className="mt-1 text-xs opacity-85">阳光社区驿站 · VIP会员</p>
+          </div>
+          <div className="flex flex-col items-center gap-1 rounded-2xl bg-white px-4 py-3 text-primary shadow-soft">
+            <Wallet className="h-6 w-6" />
+            <span className="text-sm font-bold">充值</span>
+          </div>
+        </button>
       </header>
+
+      {/* 三大服务分类 · 大按钮 · 老年人友好 */}
+      <section className="-mt-6 px-5">
+        <div className="grid grid-cols-3 gap-3 rounded-3xl bg-card p-4 shadow-elevated">
+          {[
+            {
+              key: "meal",
+              label: "营养餐",
+              desc: "控糖/低盐/高蛋白",
+              icon: Soup,
+              cls: "bg-gradient-to-br from-emerald-500 to-teal-600",
+              onClick: () => setPkgOpen(true),
+            },
+            {
+              key: "goods",
+              label: "健康商品",
+              desc: "器械/保健/营养",
+              icon: ShoppingBag,
+              cls: "bg-gradient-to-br from-amber-500 to-orange-600",
+              onClick: () => toast.success("已为您打开健康商品", { description: "血压计 / 血糖仪 / 保健品直邮驿站自提" }),
+            },
+            {
+              key: "service",
+              label: "健康服务",
+              desc: "推拿/理疗/问诊",
+              icon: HeartPulse,
+              cls: "bg-gradient-to-br from-primary to-cyan-600",
+              onClick: () => goDetail("sunshine"),
+            },
+          ].map((c) => {
+            const Icon = c.icon;
+            return (
+              <button
+                key={c.key}
+                onClick={c.onClick}
+                className="flex flex-col items-center rounded-2xl p-2 text-center active:scale-95"
+              >
+                <span className={cn("mb-2 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-soft", c.cls)}>
+                  <Icon className="h-7 w-7" strokeWidth={2.4} />
+                </span>
+                <span className="text-base font-bold text-foreground">{c.label}</span>
+                <span className="mt-0.5 text-[11px] text-muted-foreground leading-tight">{c.desc}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 快捷入口：自提 / 预约 / 充值 */}
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          <button
+            onClick={() => toast.success("待自提订单 2 件", { description: "阳光驿站 · 凭取件码 8842 领取" })}
+            className="flex flex-col items-center gap-1 rounded-2xl bg-card p-3 shadow-card active:scale-95"
+          >
+            <Package className="h-6 w-6 text-primary" />
+            <span className="text-sm font-bold text-foreground">货品自提</span>
+            <span className="text-[11px] text-muted-foreground">2 件待取</span>
+          </button>
+          <button
+            onClick={() => goDetail("sunshine")}
+            className="flex flex-col items-center gap-1 rounded-2xl bg-card p-3 shadow-card active:scale-95"
+          >
+            <CalendarCheck className="h-6 w-6 text-accent" />
+            <span className="text-sm font-bold text-foreground">服务预约</span>
+            <span className="text-[11px] text-muted-foreground">在线选时</span>
+          </button>
+          <button
+            onClick={() => toast.success("充值成功 +¥100", { description: "微信支付 · 当前余额 ¥386" })}
+            className="flex flex-col items-center gap-1 rounded-2xl bg-card p-3 shadow-card active:scale-95"
+          >
+            <Plus className="h-6 w-6 text-success" />
+            <span className="text-sm font-bold text-foreground">钱包充值</span>
+            <span className="text-[11px] text-muted-foreground">充500送100</span>
+          </button>
+        </div>
+      </section>
 
       {/* 专病套餐 · 悬浮按钮（默认收起） */}
       <button
@@ -248,13 +343,13 @@ function StationPage() {
       </Sheet>
 
 
-      <div className="mt-4 px-5">
+      <div className="mt-6 px-5">
         <div className="grid grid-cols-2 gap-2 rounded-2xl bg-card p-2 shadow-card">
 
           <button
             onClick={() => setTab("nearby")}
             className={cn(
-              "rounded-xl py-3 text-base font-semibold transition-all",
+              "rounded-xl py-3.5 text-lg font-bold transition-all",
               tab === "nearby" ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground",
             )}
           >
@@ -263,7 +358,7 @@ function StationPage() {
           <button
             onClick={() => setTab("mine")}
             className={cn(
-              "rounded-xl py-3 text-base font-semibold transition-all",
+              "rounded-xl py-3.5 text-lg font-bold transition-all",
               tab === "mine" ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground",
             )}
           >
