@@ -1,8 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ShoppingCart, Minus, Plus, Trash2 } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Trash2, MapPin, Clock, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { StationSubPage, StationCard } from "@/components/StationSubPage";
 import { useStationCart } from "@/lib/station-cart";
+
+const pickupStation = {
+  name: "阳光社区健康驿站",
+  address: "朝阳区阳光花园小区南门",
+  open: "08:00 - 20:00",
+  phone: "010-8888 8888",
+  distance: "320米",
+};
 
 export const Route = createFileRoute("/station/cart")({
   head: () => ({
@@ -20,10 +28,10 @@ function CartPage() {
 
   const checkout = () => {
     toast.success("下单成功", {
-      description: `共 ${cart.count} 件 · 合计 ¥${cart.total}，稍后到店自提`,
+      description: `共 ${cart.count} 件 · 请到 ${pickupStation.name} 自提`,
     });
     cart.clear();
-    setTimeout(() => navigate({ to: "/station" }), 700);
+    setTimeout(() => navigate({ to: "/station/pickup" }), 800);
   };
 
   return (
@@ -51,6 +59,31 @@ function CartPage() {
         </StationCard>
       ) : (
         <>
+          <div className="rounded-2xl bg-primary-soft p-4 shadow-card">
+            <div className="flex items-center gap-2 text-primary">
+              <MapPin className="h-5 w-5" />
+              <p className="text-sm font-bold">自提驿站</p>
+              <span className="ml-auto rounded-full bg-white px-2 py-0.5 text-xs font-bold text-primary">
+                {pickupStation.distance}
+              </span>
+            </div>
+            <p className="mt-2 text-lg font-bold text-foreground">{pickupStation.name}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{pickupStation.address}</p>
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5" />
+                营业 {pickupStation.open}
+              </span>
+              <a
+                href={`tel:${pickupStation.phone.replace(/\s/g, "")}`}
+                className="inline-flex items-center gap-1 text-primary"
+              >
+                <Phone className="h-3.5 w-3.5" />
+                {pickupStation.phone}
+              </a>
+            </div>
+          </div>
+
           <div className="space-y-3">
             {cart.items.map((it) => (
               <article
