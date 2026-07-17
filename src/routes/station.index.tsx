@@ -1,23 +1,18 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   MapPin,
   Phone,
-  Clock,
   Navigation,
   ChevronRight,
   Soup,
-  Home,
   Wallet,
-  Star,
-  Utensils,
   Hospital,
   Check,
   ShoppingBag,
   HeartPulse,
   CalendarCheck,
   Package,
-  Plus,
 } from "lucide-react";
 import {
   Sheet,
@@ -36,7 +31,6 @@ const specialPackages = [
   { id: "hypertension", name: "高血压专病套餐", desc: "低盐 DASH 餐 + 每日血压监测 + 医生周报", price: "¥1680/月" },
   { id: "tumor", name: "肿瘤术后康复套餐", desc: "高蛋白配餐 + 营养师 1v1 + 心理疏导", price: "¥3280/月" },
   { id: "kidney", name: "肾病专病套餐", desc: "低嘌呤低钾配餐 + 透析期随访", price: "¥2680/月" },
-  { id: "pediatric", name: "儿科生长发育套餐", desc: "儿童营养餐 + 身高骨龄追踪", price: "¥1580/月" },
   { id: "elder", name: "老年慢病综合套餐", desc: "三高联调 + 跌倒预警 + 家属同步", price: "¥2380/月" },
 ];
 
@@ -44,21 +38,9 @@ const hospitals = [
   { id: "gulou", name: "鼓楼医院", tag: "三甲 · 综合" },
   { id: "spph", name: "省人民医院", tag: "三甲 · 综合" },
   { id: "tcm", name: "省中医院", tag: "三甲 · 中医" },
-  { id: "child", name: "儿童医院", tag: "三甲 · 儿科" },
   { id: "zhongda", name: "东南大学附属中大医院", tag: "三甲 · 综合" },
   { id: "tumor", name: "省肿瘤医院", tag: "三甲 · 肿瘤" },
-  { id: "stomato", name: "省口腔医院", tag: "三甲 · 口腔" },
 ];
-
-export const Route = createFileRoute("/station/")({
-  head: () => ({
-    meta: [
-      { title: "驿站 - 蜻蜓健康" },
-      { name: "description", content: "查找附近的健康驿站，享受贴心服务。" },
-    ],
-  }),
-  component: StationPage,
-});
 
 const nearbyStations = [
   {
@@ -67,7 +49,6 @@ const nearbyStations = [
     distance: "320米",
     address: "朝阳区阳光花园小区南门",
     open: "08:00 - 20:00",
-    services: ["健康检测", "康复理疗", "中医问诊"],
   },
   {
     id: "happy",
@@ -75,7 +56,6 @@ const nearbyStations = [
     distance: "780米",
     address: "海淀区幸福里小区会所",
     open: "07:30 - 21:00",
-    services: ["太极课程", "健康讲座", "茶艺"],
   },
   {
     id: "central",
@@ -83,23 +63,29 @@ const nearbyStations = [
     distance: "1.2公里",
     address: "西城区金融街18号",
     open: "07:00 - 22:00",
-    services: ["全科检查", "营养餐厅", "活动中心"],
   },
 ];
 
-const myStations = [
-  {
-    id: "sunshine",
-    name: "阳光社区健康驿站",
-    role: "VIP会员",
-    visits: 28,
-    balance: 286,
-    nextEvent: "明天 09:00 · 太极晨练",
-  },
-];
+const myStation = {
+  id: "sunshine",
+  name: "阳光社区健康驿站",
+  balance: 286,
+  pickup: 2,
+  pickupCode: "8842",
+  nextEvent: "明天 09:00 · 太极晨练",
+};
+
+export const Route = createFileRoute("/station/")({
+  head: () => ({
+    meta: [
+      { title: "驿站 - 蜻蜓健康" },
+      { name: "description", content: "家门口的健康驿站：营养餐、健康商品、健康服务，一站搞定。" },
+    ],
+  }),
+  component: StationPage,
+});
 
 function StationPage() {
-  const [tab, setTab] = useState<"nearby" | "mine">("nearby");
   const [pkgOpen, setPkgOpen] = useState(false);
   const [activePkg, setActivePkg] = useState<string | null>(null);
   const [chosenHospital, setChosenHospital] = useState<string | null>(null);
@@ -108,9 +94,40 @@ function StationPage() {
   const goDetail = (id: string) => navigate({ to: "/station/$id", params: { id } });
   const pkg = specialPackages.find((p) => p.id === activePkg);
 
+  const categories = [
+    {
+      key: "meal",
+      label: "营养餐",
+      desc: "控糖 / 低盐 / 高蛋白",
+      icon: Soup,
+      cls: "from-emerald-500 to-teal-600",
+      onClick: () => setPkgOpen(true),
+    },
+    {
+      key: "goods",
+      label: "健康商品",
+      desc: "血压计 / 血糖仪 / 保健品",
+      icon: ShoppingBag,
+      cls: "from-amber-500 to-orange-600",
+      onClick: () =>
+        toast.success("已为您打开健康商品", {
+          description: "医疗器械 / 保健品直邮驿站自提",
+        }),
+    },
+    {
+      key: "service",
+      label: "健康服务",
+      desc: "推拿 / 理疗 / 上门问诊",
+      icon: HeartPulse,
+      cls: "from-primary to-cyan-600",
+      onClick: () => goDetail("sunshine"),
+    },
+  ];
+
   return (
     <MobileLayout>
-      <header className="bg-gradient-primary px-5 pb-8 pt-12 text-primary-foreground">
+      {/* 头部 · 钱包卡片 */}
+      <header className="bg-gradient-primary px-5 pb-10 pt-12 text-primary-foreground">
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-3xl font-bold">健康驿站</h1>
@@ -118,117 +135,164 @@ function StationPage() {
           </div>
           <ShareButton
             variant="pill"
-            label="推荐给邻居"
+            label="推荐邻居"
             title="阳光社区健康驿站"
             desc="家门口的健康守护站 · 体检 / 营养餐 / 中医理疗"
             className="bg-white/25 text-white"
           />
         </div>
 
-        {/* 我的驿站钱包 · 大字醒目 */}
-        <button
-          onClick={() => setTab("mine")}
-          className="mt-5 flex w-full items-center justify-between rounded-2xl bg-white/20 p-4 backdrop-blur-md active:scale-[0.99]"
-        >
-          <div className="text-left">
-            <p className="text-sm opacity-90">我的驿站钱包</p>
-            <p className="mt-1 text-3xl font-bold">¥ 286</p>
-            <p className="mt-1 text-xs opacity-85">阳光社区驿站 · VIP会员</p>
+        <div className="mt-5 rounded-2xl bg-white/20 p-4 backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm opacity-90">驿站钱包余额</p>
+              <p className="mt-1 text-4xl font-bold">¥ {myStation.balance}</p>
+            </div>
+            <button
+              onClick={() =>
+                toast.success("充值成功 +¥100", {
+                  description: "微信支付 · 当前余额 ¥386",
+                })
+              }
+              className="flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-primary shadow-soft active:scale-95"
+            >
+              <Wallet className="h-6 w-6" />
+              <span className="text-lg font-bold">充值</span>
+            </button>
           </div>
-          <div className="flex flex-col items-center gap-1 rounded-2xl bg-white px-4 py-3 text-primary shadow-soft">
-            <Wallet className="h-6 w-6" />
-            <span className="text-sm font-bold">充值</span>
-          </div>
-        </button>
+        </div>
       </header>
 
-      {/* 三大服务分类 · 大按钮 · 老年人友好 */}
+      {/* 三大服务 · 主要入口 · 大号卡片 */}
       <section className="-mt-6 px-5">
-        <div className="grid grid-cols-3 gap-3 rounded-3xl bg-card p-4 shadow-elevated">
-          {[
-            {
-              key: "meal",
-              label: "营养餐",
-              desc: "控糖/低盐/高蛋白",
-              icon: Soup,
-              cls: "bg-gradient-to-br from-emerald-500 to-teal-600",
-              onClick: () => setPkgOpen(true),
-            },
-            {
-              key: "goods",
-              label: "健康商品",
-              desc: "器械/保健/营养",
-              icon: ShoppingBag,
-              cls: "bg-gradient-to-br from-amber-500 to-orange-600",
-              onClick: () => toast.success("已为您打开健康商品", { description: "血压计 / 血糖仪 / 保健品直邮驿站自提" }),
-            },
-            {
-              key: "service",
-              label: "健康服务",
-              desc: "推拿/理疗/问诊",
-              icon: HeartPulse,
-              cls: "bg-gradient-to-br from-primary to-cyan-600",
-              onClick: () => goDetail("sunshine"),
-            },
-          ].map((c) => {
+        <div className="space-y-3">
+          {categories.map((c) => {
             const Icon = c.icon;
             return (
               <button
                 key={c.key}
                 onClick={c.onClick}
-                className="flex flex-col items-center rounded-2xl p-2 text-center active:scale-95"
+                className="flex w-full items-center gap-4 rounded-3xl bg-card p-5 shadow-elevated active:scale-[0.99]"
               >
-                <span className={cn("mb-2 flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-soft", c.cls)}>
-                  <Icon className="h-7 w-7" strokeWidth={2.4} />
+                <span
+                  className={cn(
+                    "flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-soft",
+                    c.cls,
+                  )}
+                >
+                  <Icon className="h-8 w-8" strokeWidth={2.4} />
                 </span>
-                <span className="text-base font-bold text-foreground">{c.label}</span>
-                <span className="mt-0.5 text-[11px] text-muted-foreground leading-tight">{c.desc}</span>
+                <div className="flex-1 text-left">
+                  <p className="text-xl font-bold text-foreground">{c.label}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{c.desc}</p>
+                </div>
+                <ChevronRight className="h-6 w-6 text-muted-foreground" />
               </button>
             );
           })}
         </div>
+      </section>
 
-        {/* 快捷入口：自提 / 预约 / 充值 */}
-        <div className="mt-4 grid grid-cols-3 gap-3">
-          <button
-            onClick={() => toast.success("待自提订单 2 件", { description: "阳光驿站 · 凭取件码 8842 领取" })}
-            className="flex flex-col items-center gap-1 rounded-2xl bg-card p-3 shadow-card active:scale-95"
-          >
-            <Package className="h-6 w-6 text-primary" />
-            <span className="text-sm font-bold text-foreground">货品自提</span>
-            <span className="text-[11px] text-muted-foreground">2 件待取</span>
-          </button>
-          <button
-            onClick={() => goDetail("sunshine")}
-            className="flex flex-col items-center gap-1 rounded-2xl bg-card p-3 shadow-card active:scale-95"
-          >
-            <CalendarCheck className="h-6 w-6 text-accent" />
-            <span className="text-sm font-bold text-foreground">服务预约</span>
-            <span className="text-[11px] text-muted-foreground">在线选时</span>
-          </button>
-          <button
-            onClick={() => toast.success("充值成功 +¥100", { description: "微信支付 · 当前余额 ¥386" })}
-            className="flex flex-col items-center gap-1 rounded-2xl bg-card p-3 shadow-card active:scale-95"
-          >
-            <Plus className="h-6 w-6 text-success" />
-            <span className="text-sm font-bold text-foreground">钱包充值</span>
-            <span className="text-[11px] text-muted-foreground">充500送100</span>
-          </button>
+      {/* 我的驿站 · 待办 */}
+      <section className="mt-6 px-5">
+        <h2 className="mb-3 text-lg font-bold text-foreground">我的驿站</h2>
+        <div className="rounded-3xl bg-card p-5 shadow-card">
+          <p className="flex items-center gap-1.5 text-base font-bold text-foreground">
+            <MapPin className="h-5 w-5 text-primary" />
+            {myStation.name}
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            下次活动 · {myStation.nextEvent}
+          </p>
+
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <button
+              onClick={() =>
+                toast.success(`待自提 ${myStation.pickup} 件`, {
+                  description: `凭取件码 ${myStation.pickupCode} 到驿站领取`,
+                })
+              }
+              className="flex items-center gap-3 rounded-2xl bg-primary-soft p-4 text-left active:scale-95"
+            >
+              <Package className="h-7 w-7 text-primary" />
+              <div>
+                <p className="text-base font-bold text-foreground">货品自提</p>
+                <p className="text-xs text-muted-foreground">{myStation.pickup} 件待取</p>
+              </div>
+            </button>
+            <button
+              onClick={() => goDetail(myStation.id)}
+              className="flex items-center gap-3 rounded-2xl bg-accent-soft p-4 text-left active:scale-95"
+            >
+              <CalendarCheck className="h-7 w-7 text-accent" />
+              <div>
+                <p className="text-base font-bold text-foreground">服务预约</p>
+                <p className="text-xs text-muted-foreground">在线选时</p>
+              </div>
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* 专病套餐 · 悬浮按钮（默认收起） */}
-      <button
-        onClick={() => setPkgOpen(true)}
-        aria-label="专病套餐"
-        className="fixed bottom-28 right-4 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-[oklch(0.65_0.16_150)] to-[oklch(0.7_0.15_180)] py-2.5 pl-3 pr-4 text-white shadow-elevated active:scale-95"
-      >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/25 backdrop-blur">
-          <Soup className="h-5 w-5" />
-        </span>
-        <span className="text-sm font-bold">专病套餐</span>
-      </button>
+      {/* 附近驿站 */}
+      <section className="mt-6 px-5 pb-6">
+        <h2 className="mb-3 text-lg font-bold text-foreground">附近驿站</h2>
+        <div className="space-y-3">
+          {nearbyStations.map((s) => (
+            <article
+              key={s.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => goDetail(s.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  goDetail(s.id);
+                }
+              }}
+              className="cursor-pointer rounded-2xl bg-card p-4 shadow-card active:scale-[0.99]"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-foreground">{s.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {s.address} · 营业 {s.open}
+                  </p>
+                </div>
+                <div className="flex flex-col items-center rounded-xl bg-primary-soft px-3 py-2">
+                  <Navigation className="h-5 w-5 text-primary" />
+                  <span className="mt-0.5 text-sm font-semibold text-primary">
+                    {s.distance}
+                  </span>
+                </div>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast(`正在拨打 ${s.name}`, { description: "010-8888 8888" });
+                  }}
+                  className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl border-2 border-primary text-base font-bold text-primary active:scale-[0.98]"
+                >
+                  <Phone className="h-4 w-4" />
+                  电话
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goDetail(s.id);
+                  }}
+                  className="flex min-h-[48px] items-center justify-center rounded-xl bg-primary text-base font-bold text-primary-foreground shadow-soft active:scale-[0.98]"
+                >
+                  查看详情
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
+      {/* 营养餐 · 专病套餐 Sheet */}
       <Sheet
         open={pkgOpen}
         onOpenChange={(v) => {
@@ -245,10 +309,10 @@ function StationPage() {
               <SheetHeader className="text-left">
                 <SheetTitle className="flex items-center gap-2 text-xl">
                   <Soup className="h-5 w-5 text-primary" />
-                  专病套餐
+                  营养餐 · 专病套餐
                 </SheetTitle>
                 <SheetDescription>
-                  按病种定制 · 营养师审核 · 可配置至各大三甲医院直送
+                  按病种定制 · 营养师审核 · 可配送至各大三甲医院
                 </SheetDescription>
               </SheetHeader>
               <div className="mt-3 space-y-2">
@@ -341,182 +405,6 @@ function StationPage() {
           )}
         </SheetContent>
       </Sheet>
-
-
-      <div className="mt-6 px-5">
-        <div className="grid grid-cols-2 gap-2 rounded-2xl bg-card p-2 shadow-card">
-
-          <button
-            onClick={() => setTab("nearby")}
-            className={cn(
-              "rounded-xl py-3.5 text-lg font-bold transition-all",
-              tab === "nearby" ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground",
-            )}
-          >
-            附近驿站
-          </button>
-          <button
-            onClick={() => setTab("mine")}
-            className={cn(
-              "rounded-xl py-3.5 text-lg font-bold transition-all",
-              tab === "mine" ? "bg-primary text-primary-foreground shadow-soft" : "text-muted-foreground",
-            )}
-          >
-            我的驿站
-          </button>
-        </div>
-      </div>
-
-      <section className="space-y-4 px-5 pt-6">
-        {tab === "nearby" &&
-          nearbyStations.map((s) => (
-            <article
-              key={s.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => goDetail(s.id)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  goDetail(s.id);
-                }
-              }}
-              className="cursor-pointer rounded-2xl bg-card p-5 shadow-card transition-transform active:scale-[0.99]"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <h2 className="flex items-center gap-1 text-xl font-bold text-foreground">
-                    {s.name}
-                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                  </h2>
-                  <p className="mt-1 flex items-center gap-1.5 text-base text-muted-foreground">
-                    <MapPin className="h-4 w-4" />
-                    {s.address}
-                  </p>
-                </div>
-                <div className="flex flex-col items-center rounded-xl bg-primary-soft px-3 py-2">
-                  <Navigation className="h-5 w-5 text-primary" />
-                  <span className="mt-0.5 text-sm font-semibold text-primary">{s.distance}</span>
-                </div>
-              </div>
-
-              <p className="mt-3 flex items-center gap-1.5 text-base text-foreground">
-                <Clock className="h-4 w-4 text-primary" />
-                营业时间 {s.open}
-              </p>
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                {s.services.map((srv) => (
-                  <span
-                    key={srv}
-                    className="rounded-full bg-accent-soft px-3 py-1 text-sm font-medium text-accent"
-                  >
-                    {srv}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toast(`正在拨打 ${s.name}`, { description: "010-8888 8888" });
-                  }}
-                  className="flex min-h-[48px] items-center justify-center gap-1 rounded-xl border-2 border-primary text-sm font-semibold text-primary active:scale-[0.98]"
-                >
-                  <Phone className="h-4 w-4" />
-                  电话
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toast(`导航前往 ${s.name}`, { description: `预计步行 ${s.distance}` });
-                  }}
-                  className="flex min-h-[48px] items-center justify-center gap-1 rounded-xl border-2 border-accent text-sm font-semibold text-accent active:scale-[0.98]"
-                >
-                  <Navigation className="h-4 w-4" />
-                  导航
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    goDetail(s.id);
-                  }}
-                  className="flex min-h-[48px] items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-soft active:scale-[0.98]"
-                >
-                  查看详情
-                </button>
-              </div>
-            </article>
-          ))}
-
-        {tab === "mine" &&
-          myStations.map((s) => (
-            <article key={s.id} className="rounded-2xl bg-card p-5 shadow-card">
-              <div className="flex items-center gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-primary text-white">
-                  <Home className="h-7 w-7" />
-                </div>
-
-                <div className="flex-1">
-                  <h2 className="text-xl font-bold">{s.name}</h2>
-                  <p className="mt-0.5 text-sm font-semibold text-accent">
-                    {s.role} · 已到访 {s.visits} 次
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-muted p-3">
-                <div>
-                  <p className="text-xs text-muted-foreground">驿站余额</p>
-                  <p className="mt-0.5 text-xl font-bold text-foreground">¥ {s.balance}</p>
-                </div>
-                <button
-                  onClick={() => toast.success("充值成功 +¥100", { description: "微信支付 · 当前余额 ¥386" })}
-                  className="flex items-center justify-center gap-1.5 rounded-xl bg-accent text-sm font-bold text-accent-foreground shadow-soft active:scale-95"
-                >
-                  <Wallet className="h-4 w-4" /> 立即充值
-                </button>
-
-              </div>
-
-              <div className="mt-3 rounded-xl bg-accent-soft p-4">
-                <p className="text-sm font-medium text-muted-foreground">下次活动</p>
-                <p className="mt-1 text-base font-bold text-accent">{s.nextEvent}</p>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <Link
-                  to="/me/records"
-                  className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl border-2 border-primary text-sm font-bold text-primary active:scale-[0.98]"
-                >
-                  <Star className="h-4 w-4" /> 服务评价
-                </Link>
-                <Link
-                  to="/me/records"
-                  className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl border-2 border-accent text-sm font-bold text-accent active:scale-[0.98]"
-                >
-                  <Utensils className="h-4 w-4" /> 用餐评价
-                </Link>
-
-              </div>
-
-              <Link
-                to="/station/$id"
-                params={{ id: s.id }}
-                className="mt-3 flex min-h-[52px] w-full items-center justify-center rounded-xl bg-primary text-base font-semibold text-primary-foreground shadow-soft active:scale-[0.98]"
-              >
-                查看驿站详情
-              </Link>
-            </article>
-          ))}
-
-        {tab === "mine" && myStations.length === 0 && (
-          <div className="rounded-2xl bg-card p-8 text-center shadow-card">
-            <p className="text-base text-muted-foreground">您还没有加入驿站</p>
-          </div>
-        )}
-      </section>
     </MobileLayout>
   );
 }
