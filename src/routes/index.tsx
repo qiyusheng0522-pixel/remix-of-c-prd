@@ -152,11 +152,12 @@ const messages: Msg[] = [
 const REACTIONS = ["❤️", "✨", "👋", "🌸", "😊", "🎉", "💚"];
 
 const aiShortcuts = [
-  { label: "用药咨询", icon: Pill, to: "/chat/xiaoqing", bg: "bg-gradient-to-br from-rose-400 to-rose-500" },
-  { label: "饮食建议", icon: UtensilsCrossed, to: "/health/meal", bg: "bg-gradient-to-br from-amber-400 to-orange-500" },
-  { label: "运动计划", icon: Footprints, to: "/health/workout", bg: "bg-gradient-to-br from-emerald-400 to-green-500" },
-  { label: "报告解读", icon: ScanLine, to: "/health/ocr", bg: "bg-gradient-to-br from-teal-400 to-cyan-500" },
-  { label: "找医生", icon: Stethoscope, to: "/messages/doctor/li", bg: "bg-gradient-to-br from-primary to-cyan-600" },
+  { label: "寻医", icon: Stethoscope, to: "/messages/doctor/li" },
+  { label: "报告解读", icon: ScanLine, to: "/health/ocr" },
+  { label: "用药指导", icon: Pill, to: "/chat/xiaoqing" },
+  { label: "健康管理", icon: Activity, to: "/health" },
+  { label: "饮食建议", icon: UtensilsCrossed, to: "/health/meal" },
+  { label: "运动计划", icon: Footprints, to: "/health/workout" },
 ];
 
 
@@ -272,33 +273,33 @@ function HomePage() {
                 {msg.category}
               </span>
             </div>
-            <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[17px] font-semibold leading-[1.45] text-foreground">
-              {msg.text.replace(/\n/g, "")}
-              <span className="ml-0.5 inline-block h-4 w-0.5 translate-y-0.5 animate-pulse bg-primary align-middle" />
+            <p className="whitespace-pre-line text-[20px] font-semibold leading-[1.55] text-foreground">
+              {msg.text}
+              <span className="ml-0.5 inline-block h-5 w-0.5 translate-y-0.5 animate-pulse bg-primary align-middle" />
             </p>
             {/* 操作区：主按钮 + 等会儿 + 说话 */}
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-4 flex items-center gap-2">
               <button
                 onClick={handleDone}
-                className="flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground shadow-card active:scale-[0.97]"
+                className="flex min-h-[54px] flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 text-base font-bold text-primary-foreground shadow-card active:scale-[0.97]"
               >
-                <Icon className="h-5 w-5" strokeWidth={2.5} />
+                <Icon className="h-6 w-6" strokeWidth={2.5} />
                 {msg.action}
               </button>
               <button
                 onClick={handleLater}
                 aria-label="稍后再说"
-                className="flex h-12 shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-4 text-sm font-semibold text-muted-foreground shadow-card active:scale-95"
+                className="flex h-[54px] shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-4 text-base font-semibold text-muted-foreground shadow-card active:scale-95"
               >
-                <Clock className="h-4 w-4" />
+                <Clock className="h-5 w-5" />
                 稍后
               </button>
               <button
                 onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
                 aria-label="对蜻蜓说话"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
+                className="flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
               >
-                <Mic className="h-5 w-5" />
+                <Mic className="h-6 w-6" />
               </button>
             </div>
           </div>
@@ -321,27 +322,6 @@ function HomePage() {
                 }`}
               />
             ))}
-          </div>
-        </section>
-
-        {/* 快捷 AI 功能 */}
-        <section className="relative z-10 mx-6 mt-4">
-          <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1">
-            {aiShortcuts.map((s) => {
-              const Icon = s.icon;
-              return (
-                <button
-                  key={s.label}
-                  onClick={() => navigate({ to: s.to })}
-                  className="flex shrink-0 items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-semibold text-foreground shadow-card transition-transform active:scale-95"
-                >
-                  <span className={`flex h-8 w-8 items-center justify-center rounded-full ${s.bg}`}>
-                    <Icon className="h-4 w-4 text-white" strokeWidth={2.5} />
-                  </span>
-                  {s.label}
-                </button>
-              );
-            })}
           </div>
         </section>
 
@@ -407,6 +387,24 @@ function HomePage() {
 
 
           {/* AI 输入框 · 首页直达 */}
+          {/* 快捷 AI 咨询 · 在输入框上方 */}
+          <div className="mb-2 w-full max-w-sm overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center gap-2 pb-0.5">
+              {aiShortcuts.map((s) => {
+                const SIcon = s.icon;
+                return (
+                  <button
+                    key={s.label}
+                    onClick={() => navigate({ to: s.to })}
+                    className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold text-foreground shadow-sm active:scale-95"
+                  >
+                    <SIcon className="h-4 w-4 text-primary" strokeWidth={2.5} />
+                    {s.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
