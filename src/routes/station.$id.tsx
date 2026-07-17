@@ -11,9 +11,13 @@ import {
   Star,
   Wallet,
   ChevronRight,
+  Check,
+  Home as HomeIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { ShareButton } from "@/components/ShareButton";
+import { MobileLayout } from "@/components/MobileLayout";
+import { useMyStation, setMyStation } from "@/lib/my-station";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/station/$id")({
@@ -111,20 +115,24 @@ function StationDetail() {
   const navigate = useNavigate();
   const s = stationData[id];
   const [tab, setTab] = useState<"menu" | "service" | "review">("menu");
+  const { id: myId } = useMyStation();
+  const isMy = myId === id;
 
   if (!s) {
     return (
-      <div className="mx-auto min-h-screen max-w-[480px] bg-gradient-bg p-8 text-center">
-        <p className="text-base text-muted-foreground">驿站不存在</p>
-        <Link to="/station" className="mt-4 inline-block text-primary underline">
-          返回驿站列表
-        </Link>
-      </div>
+      <MobileLayout>
+        <div className="p-8 text-center">
+          <p className="text-base text-muted-foreground">驿站不存在</p>
+          <Link to="/station" className="mt-4 inline-block text-primary underline">
+            返回驿站列表
+          </Link>
+        </div>
+      </MobileLayout>
     );
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-[480px] bg-gradient-bg pb-8">
+    <MobileLayout>
       <header className="bg-gradient-primary px-5 pb-6 pt-12 text-primary-foreground">
         <div className="flex items-center justify-between">
           <button
@@ -149,7 +157,24 @@ function StationDetail() {
           <Clock className="h-5 w-5" /> {s.open} · 距您 {s.distance}
         </p>
 
-        {s.isMine && s.balance !== undefined && (
+        <button
+          onClick={() => {
+            if (isMy) return;
+            setMyStation(id);
+            toast.success(`已设为我的驿站`, { description: s.name });
+          }}
+          className={cn(
+            "mt-4 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl text-base font-bold shadow-soft active:scale-[0.98]",
+            isMy
+              ? "bg-white/20 text-white"
+              : "bg-white text-primary",
+          )}
+        >
+          {isMy ? <Check className="h-5 w-5" /> : <HomeIcon className="h-5 w-5" />}
+          {isMy ? "当前是我的驿站" : "设为我的驿站"}
+        </button>
+
+        {isMy && s.balance !== undefined && (
           <div className="mt-5 flex items-center justify-between rounded-2xl bg-white/15 p-4 backdrop-blur-sm">
             <div>
               <p className="text-sm opacity-90">驿站余额</p>
@@ -277,7 +302,7 @@ function StationDetail() {
       {/* 评价 */}
       {tab === "review" && (
         <section className="space-y-3 px-5 pt-4">
-          {s.isMine ? (
+          {isMy ? (
             <>
               <button
                 onClick={() => navigate({ to: "/me/records" })}
@@ -332,6 +357,6 @@ function StationDetail() {
           </div>
         </section>
       )}
-    </div>
+    </MobileLayout>
   );
 }

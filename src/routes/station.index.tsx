@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   MapPin,
   Phone,
@@ -10,43 +11,21 @@ import {
   HeartPulse,
   CalendarCheck,
   Package,
+  Check,
+  Repeat,
 } from "lucide-react";
 import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { cn } from "@/lib/utils";
+import { allStations, useMyStation, setMyStation } from "@/lib/my-station";
 
-const nearbyStations = [
-  {
-    id: "sunshine",
-    name: "阳光社区健康驿站",
-    distance: "320米",
-    address: "朝阳区阳光花园小区南门",
-    open: "08:00 - 20:00",
-  },
-  {
-    id: "happy",
-    name: "幸福里养生驿站",
-    distance: "780米",
-    address: "海淀区幸福里小区会所",
-    open: "07:30 - 21:00",
-  },
-  {
-    id: "central",
-    name: "蜻蜓中央旗舰驿站",
-    distance: "1.2公里",
-    address: "西城区金融街18号",
-    open: "07:00 - 22:00",
-  },
-];
+const nearbyStations = allStations;
 
-const myStation = {
-  id: "sunshine",
-  name: "阳光社区健康驿站",
-  balance: 286,
-  pickup: 2,
-  pickupCode: "8842",
-  nextEvent: "明天 09:00 · 太极晨练",
+const stationExtras: Record<string, { balance: number; pickup: number; nextEvent: string }> = {
+  sunshine: { balance: 286, pickup: 2, nextEvent: "明天 09:00 · 太极晨练" },
+  happy: { balance: 0, pickup: 0, nextEvent: "本周三 10:00 · 营养讲座" },
+  central: { balance: 0, pickup: 0, nextEvent: "本周六 15:00 · 康复体验课" },
 };
 
 export const Route = createFileRoute("/station/")({
@@ -61,6 +40,9 @@ export const Route = createFileRoute("/station/")({
 
 function StationPage() {
   const navigate = useNavigate();
+  const { id: myId, station: myStation } = useMyStation();
+  const extras = stationExtras[myId] ?? { balance: 0, pickup: 0, nextEvent: "暂无活动" };
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const goDetail = (id: string) => navigate({ to: "/station/$id", params: { id } });
 
@@ -113,7 +95,7 @@ function StationPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm opacity-90">驿站钱包余额</p>
-              <p className="mt-1 text-4xl font-bold">¥ {myStation.balance}</p>
+              <p className="mt-1 text-4xl font-bold">¥ {extras.balance}</p>
             </div>
             <button
               onClick={() => navigate({ to: "/station/wallet" })}
@@ -158,15 +140,35 @@ function StationPage() {
 
       {/* 我的驿站 · 待办 */}
       <section className="mt-6 px-5">
-        <h2 className="mb-3 text-lg font-bold text-foreground">我的驿站</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-foreground">我的驿站</h2>
+          <button
+            onClick={() => setPickerOpen(true)}
+            className="flex items-center gap-1 rounded-full bg-primary-soft px-3 py-1.5 text-sm font-bold text-primary active:scale-95"
+          >
+            <Repeat className="h-4 w-4" />
+            更换驿站
+          </button>
+        </div>
         <div className="rounded-3xl bg-card p-5 shadow-card">
-          <p className="flex items-center gap-1.5 text-base font-bold text-foreground">
-            <MapPin className="h-5 w-5 text-primary" />
-            {myStation.name}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            下次活动 · {myStation.nextEvent}
-          </p>
+          <button
+            onClick={() => goDetail(myStation.id)}
+            className="flex w-full items-start justify-between gap-2 text-left"
+          >
+            <div className="flex-1">
+              <p className="flex items-center gap-1.5 text-base font-bold text-foreground">
+                <MapPin className="h-5 w-5 text-primary" />
+                {myStation.name}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {myStation.address} · {myStation.distance}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                下次活动 · {extras.nextEvent}
+              </p>
+            </div>
+            <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground" />
+          </button>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
             <button
@@ -176,7 +178,7 @@ function StationPage() {
               <Package className="h-7 w-7 text-primary" />
               <div>
                 <p className="text-base font-bold text-foreground">货品自提</p>
-                <p className="text-xs text-muted-foreground">{myStation.pickup} 件待取</p>
+                <p className="text-xs text-muted-foreground">{extras.pickup} 件待取</p>
               </div>
             </button>
             <button
@@ -250,6 +252,53 @@ function StationPage() {
           ))}
         </div>
       </section>
+
+      {pickerOpen && (
+        <div
+          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40"
+          onClick={() => setPickerOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-[480px] rounded-t-3xl bg-card p-5 pb-8 shadow-elevated"
+          >
+            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-muted" />
+            <h3 className="text-lg font-bold text-foreground">选择我的驿站</h3>
+            <p className="mt-1 text-sm text-muted-foreground">选定后可享钱包、自提、专属活动</p>
+            <ul className="mt-4 space-y-2">
+              {allStations.map((st) => {
+                const active = st.id === myId;
+                return (
+                  <li key={st.id}>
+                    <button
+                      onClick={() => {
+                        setMyStation(st.id);
+                        setPickerOpen(false);
+                        toast.success("已切换我的驿站", { description: st.name });
+                      }}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-2xl border-2 p-4 text-left active:scale-[0.99]",
+                        active
+                          ? "border-primary bg-primary-soft"
+                          : "border-transparent bg-muted/50",
+                      )}
+                    >
+                      <MapPin className={cn("h-6 w-6", active ? "text-primary" : "text-muted-foreground")} />
+                      <div className="flex-1">
+                        <p className="text-base font-bold text-foreground">{st.name}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {st.address} · {st.distance}
+                        </p>
+                      </div>
+                      {active && <Check className="h-5 w-5 text-primary" />}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      )}
     </MobileLayout>
   );
 }
