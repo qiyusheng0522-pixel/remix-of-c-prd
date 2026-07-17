@@ -22,6 +22,7 @@ import { Route as StationIndexRouteImport } from './routes/station.index'
 import { Route as MeIndexRouteImport } from './routes/me.index'
 import { Route as HmIndexRouteImport } from './routes/hm.index'
 import { Route as CircleIndexRouteImport } from './routes/circle.index'
+import { Route as StationWalletRouteImport } from './routes/station.wallet'
 import { Route as StationIdRouteImport } from './routes/station.$id'
 import { Route as PartnersIdRouteImport } from './routes/partners.$id'
 import { Route as MeTeamRouteImport } from './routes/me.team'
@@ -212,6 +213,11 @@ const CircleIndexRoute = CircleIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => CircleRoute,
+} as any)
+const StationWalletRoute = StationWalletRouteImport.update({
+  id: '/station/wallet',
+  path: '/station/wallet',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const StationIdRoute = StationIdRouteImport.update({
   id: '/station/$id',
@@ -929,6 +935,7 @@ export interface FileRoutesByFullPath {
   '/me/team': typeof MeTeamRoute
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
+  '/station/wallet': typeof StationWalletRoute
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
   '/me/': typeof MeIndexRoute
@@ -1068,6 +1075,7 @@ export interface FileRoutesByTo {
   '/me/team': typeof MeTeamRoute
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
+  '/station/wallet': typeof StationWalletRoute
   '/circle': typeof CircleIndexRoute
   '/hm': typeof HmIndexRoute
   '/me': typeof MeIndexRoute
@@ -1209,6 +1217,7 @@ export interface FileRoutesById {
   '/me/team': typeof MeTeamRoute
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
+  '/station/wallet': typeof StationWalletRoute
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
   '/me/': typeof MeIndexRoute
@@ -1351,6 +1360,7 @@ export interface FileRouteTypes {
     | '/me/team'
     | '/partners/$id'
     | '/station/$id'
+    | '/station/wallet'
     | '/circle/'
     | '/hm/'
     | '/me/'
@@ -1490,6 +1500,7 @@ export interface FileRouteTypes {
     | '/me/team'
     | '/partners/$id'
     | '/station/$id'
+    | '/station/wallet'
     | '/circle'
     | '/hm'
     | '/me'
@@ -1630,6 +1641,7 @@ export interface FileRouteTypes {
     | '/me/team'
     | '/partners/$id'
     | '/station/$id'
+    | '/station/wallet'
     | '/circle/'
     | '/hm/'
     | '/me/'
@@ -1752,6 +1764,7 @@ export interface RootRouteChildren {
   MeSettingsRoute: typeof MeSettingsRoute
   MeTeamRoute: typeof MeTeamRoute
   StationIdRoute: typeof StationIdRoute
+  StationWalletRoute: typeof StationWalletRoute
   HmIndexRoute: typeof HmIndexRoute
   MeIndexRoute: typeof MeIndexRoute
   StationIndexRoute: typeof StationIndexRoute
@@ -1850,6 +1863,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/circle/'
       preLoaderRoute: typeof CircleIndexRouteImport
       parentRoute: typeof CircleRoute
+    }
+    '/station/wallet': {
+      id: '/station/wallet'
+      path: '/station/wallet'
+      fullPath: '/station/wallet'
+      preLoaderRoute: typeof StationWalletRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/station/$id': {
       id: '/station/$id'
@@ -3038,6 +3058,7 @@ const rootRouteChildren: RootRouteChildren = {
   MeSettingsRoute: MeSettingsRoute,
   MeTeamRoute: MeTeamRoute,
   StationIdRoute: StationIdRoute,
+  StationWalletRoute: StationWalletRoute,
   HmIndexRoute: HmIndexRoute,
   MeIndexRoute: MeIndexRoute,
   StationIndexRoute: StationIndexRoute,
