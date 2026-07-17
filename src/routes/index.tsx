@@ -259,29 +259,29 @@ function HomePage() {
           </div>
         </header>
 
-        {/* 对话气泡 · 消息 + 操作一体化 */}
-        <section className="relative z-10 mx-6 mt-4">
+        {/* 对话气泡 · 消息 + 操作一体化 · 适老放大版 */}
+        <section className="relative z-10 mx-5 mt-6">
           <div
             key={bubbleKey}
-            className="relative rounded-[28px] rounded-bl-md bg-white px-5 py-4 shadow-elevated"
+            className="relative rounded-[32px] rounded-bl-md bg-white px-6 py-5 shadow-elevated"
             style={{ animation: "bubblePop 0.45s cubic-bezier(.34,1.56,.64,1)" }}
           >
-            <div className="mb-2 flex items-center gap-2">
-              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-success" />
-              <span className="text-sm font-semibold text-primary">蜻蜓医生</span>
-              <span className="ml-auto rounded-full bg-primary-soft px-2.5 py-0.5 text-[11px] font-semibold text-primary">
+            <div className="mb-3 flex items-center gap-2.5">
+              <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-success" />
+              <span className="text-base font-semibold text-primary">蜻蜓医生</span>
+              <span className="ml-auto rounded-full bg-primary-soft px-3 py-1 text-[13px] font-semibold text-primary">
                 {msg.category}
               </span>
             </div>
-            <p className="whitespace-pre-line text-[20px] font-semibold leading-[1.55] text-foreground">
+            <p className="whitespace-pre-line text-[23px] font-semibold leading-[1.6] text-foreground">
               {msg.text}
-              <span className="ml-0.5 inline-block h-5 w-0.5 translate-y-0.5 animate-pulse bg-primary align-middle" />
+              <span className="ml-1 inline-block h-6 w-0.5 translate-y-1 animate-pulse bg-primary align-middle" />
             </p>
             {/* 操作区：主按钮 + 等会儿 + 说话 */}
-            <div className="mt-4 flex items-center gap-2">
+            <div className="mt-5 flex items-center gap-3">
               <button
                 onClick={handleDone}
-                className="flex min-h-[54px] flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 text-base font-bold text-primary-foreground shadow-card active:scale-[0.97]"
+                className="flex min-h-[64px] flex-1 items-center justify-center gap-2.5 whitespace-nowrap rounded-full bg-primary px-4 text-[17px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
               >
                 <Icon className="h-6 w-6" strokeWidth={2.5} />
                 {msg.action}
@@ -289,36 +289,36 @@ function HomePage() {
               <button
                 onClick={handleLater}
                 aria-label="稍后再说"
-                className="flex h-[54px] shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-4 text-base font-semibold text-muted-foreground shadow-card active:scale-95"
+                className="flex h-[64px] shrink-0 items-center justify-center gap-1.5 rounded-full bg-muted px-5 text-base font-semibold text-muted-foreground shadow-card active:scale-95"
               >
-                <Clock className="h-5 w-5" />
+                <Clock className="h-6 w-6" />
                 稍后
               </button>
               <button
                 onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
                 aria-label="对蜻蜓说话"
-                className="flex h-[54px] w-[54px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
+                className="flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
               >
-                <Mic className="h-6 w-6" />
+                <Mic className="h-7 w-7" />
               </button>
             </div>
           </div>
-          <div className="ml-6 -mt-px h-0 w-0 border-l-[14px] border-r-[14px] border-t-[14px] border-l-transparent border-r-transparent border-t-white drop-shadow-sm" />
+          <div className="ml-6 -mt-px h-0 w-0 border-l-[16px] border-r-[16px] border-t-[16px] border-l-transparent border-r-transparent border-t-white drop-shadow-sm" />
           {/* 追随气泡尾部的两个小圆 · 让对话更"真"一点 */}
           <div className="ml-3 mt-0.5 flex items-center gap-1">
-            <span className="block h-2 w-2 rounded-full bg-white/95 shadow-sm" />
-            <span className="block h-1.5 w-1.5 rounded-full bg-white/85 shadow-sm" />
-            <span className="block h-1 w-1 rounded-full bg-white/70" />
+            <span className="block h-2.5 w-2.5 rounded-full bg-white/95 shadow-sm" />
+            <span className="block h-2 w-2 rounded-full bg-white/85 shadow-sm" />
+            <span className="block h-1.5 w-1.5 rounded-full bg-white/70" />
           </div>
           {/* 消息切换指示点 */}
-          <div className="mt-2 flex justify-center gap-1.5">
+          <div className="mt-3 flex justify-center gap-2">
             {messages.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setIdx(i)}
                 aria-label={`第 ${i + 1} 条消息`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === idx ? "w-6 bg-primary" : "w-1.5 bg-muted-foreground/30"
+                className={`h-2 rounded-full transition-all ${
+                  i === idx ? "w-7 bg-primary" : "w-2 bg-muted-foreground/30"
                 }`}
               />
             ))}
