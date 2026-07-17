@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import {
   ArrowLeft,
@@ -108,6 +108,16 @@ function XiaoqingChatPage() {
       ]);
     }, 700);
   };
+
+  const search = useSearch({ from: "/chat/xiaoqing" });
+  const initialSentRef = useRef(false);
+  useEffect(() => {
+    if (search.message && typeof search.message === "string" && !initialSentRef.current) {
+      initialSentRef.current = true;
+      send(search.message);
+      navigate({ to: "/chat/xiaoqing", search: {} });
+    }
+  }, [search]);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[480px] flex-col bg-gradient-bg">
