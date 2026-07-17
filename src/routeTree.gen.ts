@@ -22,6 +22,11 @@ import { Route as StationIndexRouteImport } from './routes/station.index'
 import { Route as MeIndexRouteImport } from './routes/me.index'
 import { Route as HmIndexRouteImport } from './routes/hm.index'
 import { Route as CircleIndexRouteImport } from './routes/circle.index'
+import { Route as StationWalletRouteImport } from './routes/station.wallet'
+import { Route as StationPickupRouteImport } from './routes/station.pickup'
+import { Route as StationMealsRouteImport } from './routes/station.meals'
+import { Route as StationGoodsRouteImport } from './routes/station.goods'
+import { Route as StationBookingRouteImport } from './routes/station.booking'
 import { Route as StationIdRouteImport } from './routes/station.$id'
 import { Route as PartnersIdRouteImport } from './routes/partners.$id'
 import { Route as MeTeamRouteImport } from './routes/me.team'
@@ -212,6 +217,31 @@ const CircleIndexRoute = CircleIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => CircleRoute,
+} as any)
+const StationWalletRoute = StationWalletRouteImport.update({
+  id: '/station/wallet',
+  path: '/station/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationPickupRoute = StationPickupRouteImport.update({
+  id: '/station/pickup',
+  path: '/station/pickup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationMealsRoute = StationMealsRouteImport.update({
+  id: '/station/meals',
+  path: '/station/meals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationGoodsRoute = StationGoodsRouteImport.update({
+  id: '/station/goods',
+  path: '/station/goods',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationBookingRoute = StationBookingRouteImport.update({
+  id: '/station/booking',
+  path: '/station/booking',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const StationIdRoute = StationIdRouteImport.update({
   id: '/station/$id',
@@ -929,6 +959,11 @@ export interface FileRoutesByFullPath {
   '/me/team': typeof MeTeamRoute
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
+  '/station/booking': typeof StationBookingRoute
+  '/station/goods': typeof StationGoodsRoute
+  '/station/meals': typeof StationMealsRoute
+  '/station/pickup': typeof StationPickupRoute
+  '/station/wallet': typeof StationWalletRoute
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
   '/me/': typeof MeIndexRoute
@@ -1068,6 +1103,11 @@ export interface FileRoutesByTo {
   '/me/team': typeof MeTeamRoute
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
+  '/station/booking': typeof StationBookingRoute
+  '/station/goods': typeof StationGoodsRoute
+  '/station/meals': typeof StationMealsRoute
+  '/station/pickup': typeof StationPickupRoute
+  '/station/wallet': typeof StationWalletRoute
   '/circle': typeof CircleIndexRoute
   '/hm': typeof HmIndexRoute
   '/me': typeof MeIndexRoute
@@ -1209,6 +1249,11 @@ export interface FileRoutesById {
   '/me/team': typeof MeTeamRoute
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
+  '/station/booking': typeof StationBookingRoute
+  '/station/goods': typeof StationGoodsRoute
+  '/station/meals': typeof StationMealsRoute
+  '/station/pickup': typeof StationPickupRoute
+  '/station/wallet': typeof StationWalletRoute
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
   '/me/': typeof MeIndexRoute
@@ -1351,6 +1396,11 @@ export interface FileRouteTypes {
     | '/me/team'
     | '/partners/$id'
     | '/station/$id'
+    | '/station/booking'
+    | '/station/goods'
+    | '/station/meals'
+    | '/station/pickup'
+    | '/station/wallet'
     | '/circle/'
     | '/hm/'
     | '/me/'
@@ -1490,6 +1540,11 @@ export interface FileRouteTypes {
     | '/me/team'
     | '/partners/$id'
     | '/station/$id'
+    | '/station/booking'
+    | '/station/goods'
+    | '/station/meals'
+    | '/station/pickup'
+    | '/station/wallet'
     | '/circle'
     | '/hm'
     | '/me'
@@ -1630,6 +1685,11 @@ export interface FileRouteTypes {
     | '/me/team'
     | '/partners/$id'
     | '/station/$id'
+    | '/station/booking'
+    | '/station/goods'
+    | '/station/meals'
+    | '/station/pickup'
+    | '/station/wallet'
     | '/circle/'
     | '/hm/'
     | '/me/'
@@ -1752,6 +1812,11 @@ export interface RootRouteChildren {
   MeSettingsRoute: typeof MeSettingsRoute
   MeTeamRoute: typeof MeTeamRoute
   StationIdRoute: typeof StationIdRoute
+  StationBookingRoute: typeof StationBookingRoute
+  StationGoodsRoute: typeof StationGoodsRoute
+  StationMealsRoute: typeof StationMealsRoute
+  StationPickupRoute: typeof StationPickupRoute
+  StationWalletRoute: typeof StationWalletRoute
   HmIndexRoute: typeof HmIndexRoute
   MeIndexRoute: typeof MeIndexRoute
   StationIndexRoute: typeof StationIndexRoute
@@ -1850,6 +1915,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/circle/'
       preLoaderRoute: typeof CircleIndexRouteImport
       parentRoute: typeof CircleRoute
+    }
+    '/station/wallet': {
+      id: '/station/wallet'
+      path: '/station/wallet'
+      fullPath: '/station/wallet'
+      preLoaderRoute: typeof StationWalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/pickup': {
+      id: '/station/pickup'
+      path: '/station/pickup'
+      fullPath: '/station/pickup'
+      preLoaderRoute: typeof StationPickupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/meals': {
+      id: '/station/meals'
+      path: '/station/meals'
+      fullPath: '/station/meals'
+      preLoaderRoute: typeof StationMealsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/goods': {
+      id: '/station/goods'
+      path: '/station/goods'
+      fullPath: '/station/goods'
+      preLoaderRoute: typeof StationGoodsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/booking': {
+      id: '/station/booking'
+      path: '/station/booking'
+      fullPath: '/station/booking'
+      preLoaderRoute: typeof StationBookingRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/station/$id': {
       id: '/station/$id'
@@ -3038,6 +3138,11 @@ const rootRouteChildren: RootRouteChildren = {
   MeSettingsRoute: MeSettingsRoute,
   MeTeamRoute: MeTeamRoute,
   StationIdRoute: StationIdRoute,
+  StationBookingRoute: StationBookingRoute,
+  StationGoodsRoute: StationGoodsRoute,
+  StationMealsRoute: StationMealsRoute,
+  StationPickupRoute: StationPickupRoute,
+  StationWalletRoute: StationWalletRoute,
   HmIndexRoute: HmIndexRoute,
   MeIndexRoute: MeIndexRoute,
   StationIndexRoute: StationIndexRoute,
