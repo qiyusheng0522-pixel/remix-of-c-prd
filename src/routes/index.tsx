@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import avatarFull from "@/assets/avatar-fullbody.png";
+import dragonflyDoctor from "@/assets/dragonfly-doctor.png";
 
 
 export const Route = createFileRoute("/")({
@@ -335,13 +335,13 @@ function HomePage() {
           >
             <span className="pointer-events-none absolute -bottom-1 left-1/2 h-6 w-40 -translate-x-1/2 rounded-[50%] bg-primary/25 blur-2xl" />
             <span className="pointer-events-none absolute inset-0 -z-10 m-auto h-56 w-56 animate-pulse rounded-full bg-gradient-to-br from-primary/25 via-transparent to-orange-300/25 blur-2xl" />
-            <div className="relative flex h-full max-h-[20%] items-end">
+            <div className="relative flex h-full max-h-[45%] items-end">
               <div className="relative h-full">
                 <img
-                  src={avatarFull}
-                  alt="健康管家蜻蜓"
-                  width={768}
-                  height={1536}
+                  src={dragonflyDoctor}
+                  alt="卡通蜻蜓医生"
+                  width={1024}
+                  height={1024}
                   className="h-full w-auto object-contain drop-shadow-2xl"
                   style={{
                     transformOrigin: "50% 95%",
