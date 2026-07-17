@@ -18,7 +18,6 @@ import {
   ClipboardCheck,
   User,
   Crown,
-  Cloud,
   X,
 } from "lucide-react";
 import { MobileLayout } from "@/components/MobileLayout";
