@@ -321,7 +321,29 @@ function HomePage() {
           </div>
         </section>
 
+        {/* 快捷 AI 功能 */}
+        <section className="relative z-10 mx-6 mt-4">
+          <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1">
+            {aiShortcuts.map((s) => {
+              const Icon = s.icon;
+              return (
+                <button
+                  key={s.label}
+                  onClick={() => navigate({ to: s.to })}
+                  className="flex shrink-0 items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-semibold text-foreground shadow-card transition-transform active:scale-95"
+                >
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-full ${s.bg}`}>
+                    <Icon className="h-4 w-4 text-white" strokeWidth={2.5} />
+                  </span>
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         {/* 3D 虚拟人 · 自适应填充剩余区域 */}
+
         <div className="relative z-0 flex flex-1 flex-col items-center justify-end py-2 min-h-0">
           <button
             onClick={handleAvatarTap}
