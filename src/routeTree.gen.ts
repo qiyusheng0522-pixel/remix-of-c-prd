@@ -26,6 +26,7 @@ import { Route as StationWalletRouteImport } from './routes/station.wallet'
 import { Route as StationPickupRouteImport } from './routes/station.pickup'
 import { Route as StationMealsRouteImport } from './routes/station.meals'
 import { Route as StationGoodsRouteImport } from './routes/station.goods'
+import { Route as StationCartRouteImport } from './routes/station.cart'
 import { Route as StationBookingRouteImport } from './routes/station.booking'
 import { Route as StationIdRouteImport } from './routes/station.$id'
 import { Route as PartnersIdRouteImport } from './routes/partners.$id'
@@ -236,6 +237,11 @@ const StationMealsRoute = StationMealsRouteImport.update({
 const StationGoodsRoute = StationGoodsRouteImport.update({
   id: '/station/goods',
   path: '/station/goods',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationCartRoute = StationCartRouteImport.update({
+  id: '/station/cart',
+  path: '/station/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StationBookingRoute = StationBookingRouteImport.update({
@@ -960,6 +966,7 @@ export interface FileRoutesByFullPath {
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
   '/station/booking': typeof StationBookingRoute
+  '/station/cart': typeof StationCartRoute
   '/station/goods': typeof StationGoodsRoute
   '/station/meals': typeof StationMealsRoute
   '/station/pickup': typeof StationPickupRoute
@@ -1104,6 +1111,7 @@ export interface FileRoutesByTo {
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
   '/station/booking': typeof StationBookingRoute
+  '/station/cart': typeof StationCartRoute
   '/station/goods': typeof StationGoodsRoute
   '/station/meals': typeof StationMealsRoute
   '/station/pickup': typeof StationPickupRoute
@@ -1250,6 +1258,7 @@ export interface FileRoutesById {
   '/partners/$id': typeof PartnersIdRoute
   '/station/$id': typeof StationIdRoute
   '/station/booking': typeof StationBookingRoute
+  '/station/cart': typeof StationCartRoute
   '/station/goods': typeof StationGoodsRoute
   '/station/meals': typeof StationMealsRoute
   '/station/pickup': typeof StationPickupRoute
@@ -1397,6 +1406,7 @@ export interface FileRouteTypes {
     | '/partners/$id'
     | '/station/$id'
     | '/station/booking'
+    | '/station/cart'
     | '/station/goods'
     | '/station/meals'
     | '/station/pickup'
@@ -1541,6 +1551,7 @@ export interface FileRouteTypes {
     | '/partners/$id'
     | '/station/$id'
     | '/station/booking'
+    | '/station/cart'
     | '/station/goods'
     | '/station/meals'
     | '/station/pickup'
@@ -1686,6 +1697,7 @@ export interface FileRouteTypes {
     | '/partners/$id'
     | '/station/$id'
     | '/station/booking'
+    | '/station/cart'
     | '/station/goods'
     | '/station/meals'
     | '/station/pickup'
@@ -1813,6 +1825,7 @@ export interface RootRouteChildren {
   MeTeamRoute: typeof MeTeamRoute
   StationIdRoute: typeof StationIdRoute
   StationBookingRoute: typeof StationBookingRoute
+  StationCartRoute: typeof StationCartRoute
   StationGoodsRoute: typeof StationGoodsRoute
   StationMealsRoute: typeof StationMealsRoute
   StationPickupRoute: typeof StationPickupRoute
@@ -1942,6 +1955,13 @@ declare module '@tanstack/react-router' {
       path: '/station/goods'
       fullPath: '/station/goods'
       preLoaderRoute: typeof StationGoodsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/cart': {
+      id: '/station/cart'
+      path: '/station/cart'
+      fullPath: '/station/cart'
+      preLoaderRoute: typeof StationCartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/station/booking': {
@@ -3139,6 +3159,7 @@ const rootRouteChildren: RootRouteChildren = {
   MeTeamRoute: MeTeamRoute,
   StationIdRoute: StationIdRoute,
   StationBookingRoute: StationBookingRoute,
+  StationCartRoute: StationCartRoute,
   StationGoodsRoute: StationGoodsRoute,
   StationMealsRoute: StationMealsRoute,
   StationPickupRoute: StationPickupRoute,

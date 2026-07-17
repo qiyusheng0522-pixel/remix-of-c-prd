@@ -1,9 +1,10 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Soup, Hospital, Check, ChevronRight } from "lucide-react";
+import { Soup, Hospital, Check, ChevronRight, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { StationSubPage, StationCard } from "@/components/StationSubPage";
 import { cn } from "@/lib/utils";
+import { useStationCart } from "@/lib/station-cart";
 
 export const Route = createFileRoute("/station/meals")({
   head: () => ({
@@ -16,11 +17,11 @@ export const Route = createFileRoute("/station/meals")({
 });
 
 const daily = [
-  { name: "杂粮养生粥", price: 12, cal: 280, tag: "控糖", emoji: "🥣" },
-  { name: "清蒸鲈鱼套餐", price: 38, cal: 420, tag: "高蛋白", emoji: "🐟" },
-  { name: "时蔬豆腐煲", price: 22, cal: 260, tag: "低脂", emoji: "🥬" },
-  { name: "山药排骨汤", price: 28, cal: 320, tag: "养胃", emoji: "🍲" },
-  { name: "紫薯小米饭", price: 8, cal: 180, tag: "粗粮", emoji: "🍚" },
+  { id: "porridge", name: "杂粮养生粥", price: 12, cal: 280, tag: "控糖", emoji: "🥣" },
+  { id: "bass", name: "清蒸鲈鱼套餐", price: 38, cal: 420, tag: "高蛋白", emoji: "🐟" },
+  { id: "tofu", name: "时蔬豆腐煲", price: 22, cal: 260, tag: "低脂", emoji: "🥬" },
+  { id: "yam", name: "山药排骨汤", price: 28, cal: 320, tag: "养胃", emoji: "🍲" },
+  { id: "purple-rice", name: "紫薯小米饭", price: 8, cal: 180, tag: "粗粮", emoji: "🍚" },
 ];
 
 const specials = [
@@ -45,6 +46,7 @@ function MealsPage() {
   const [hosp, setHosp] = useState<string | null>(null);
   const navigate = useNavigate();
   const chosenPkg = specials.find((p) => p.id === pkg);
+  const cart = useStationCart();
 
   return (
     <StationSubPage
@@ -82,7 +84,7 @@ function MealsPage() {
       {tab === "daily" && (
         <div className="space-y-3">
           {daily.map((m) => (
-            <article key={m.name} className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-card">
+            <article key={m.id} className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-card">
               <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-muted text-3xl">
                 {m.emoji}
               </div>
@@ -94,9 +96,13 @@ function MealsPage() {
                 <p className="mt-1 text-base font-bold text-accent">¥ {m.price}</p>
               </div>
               <button
-                onClick={() =>
-                  toast.success(`已加购：${m.name}`, { description: "可到店取或外送" })
-                }
+                onClick={() => {
+                  cart.add({ id: m.id, name: m.name, price: m.price, emoji: m.emoji, tag: m.tag });
+                  toast.success(`已加入购物车：${m.name}`, {
+                    description: "点击右下角购物车结算",
+                    action: { label: "查看", onClick: () => navigate({ to: "/station/cart" }) },
+                  });
+                }}
                 className="flex h-11 items-center justify-center rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground shadow-soft active:scale-95"
               >
                 加购
@@ -190,6 +196,24 @@ function MealsPage() {
             </button>
           </div>
         </>
+      )}
+
+      {tab === "daily" && cart.count > 0 && (
+        <Link
+          to="/station/cart"
+          className="sticky bottom-24 z-40 mx-auto flex min-h-[56px] w-full max-w-sm items-center justify-between rounded-full bg-gradient-primary px-5 text-primary-foreground shadow-elevated active:scale-[0.98]"
+        >
+          <span className="flex items-center gap-2">
+            <span className="relative">
+              <ShoppingCart className="h-6 w-6" />
+              <span className="absolute -right-2 -top-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-accent px-1 text-[11px] font-bold text-accent-foreground">
+                {cart.count}
+              </span>
+            </span>
+            <span className="text-base font-bold">¥ {cart.total}</span>
+          </span>
+          <span className="text-base font-bold">去结算</span>
+        </Link>
       )}
     </StationSubPage>
   );
