@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 import {
   MapPin,
   Phone,
@@ -7,40 +6,15 @@ import {
   ChevronRight,
   Soup,
   Wallet,
-  Hospital,
-  Check,
   ShoppingBag,
   HeartPulse,
   CalendarCheck,
   Package,
 } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { cn } from "@/lib/utils";
-
-const specialPackages = [
-  { id: "diabetes", name: "糖尿病专病套餐", desc: "控糖餐 + 周复诊 + 血糖远程随访", price: "¥1980/月" },
-  { id: "hypertension", name: "高血压专病套餐", desc: "低盐 DASH 餐 + 每日血压监测 + 医生周报", price: "¥1680/月" },
-  { id: "tumor", name: "肿瘤术后康复套餐", desc: "高蛋白配餐 + 营养师 1v1 + 心理疏导", price: "¥3280/月" },
-  { id: "kidney", name: "肾病专病套餐", desc: "低嘌呤低钾配餐 + 透析期随访", price: "¥2680/月" },
-  { id: "elder", name: "老年慢病综合套餐", desc: "三高联调 + 跌倒预警 + 家属同步", price: "¥2380/月" },
-];
-
-const hospitals = [
-  { id: "gulou", name: "鼓楼医院", tag: "三甲 · 综合" },
-  { id: "spph", name: "省人民医院", tag: "三甲 · 综合" },
-  { id: "tcm", name: "省中医院", tag: "三甲 · 中医" },
-  { id: "zhongda", name: "东南大学附属中大医院", tag: "三甲 · 综合" },
-  { id: "tumor", name: "省肿瘤医院", tag: "三甲 · 肿瘤" },
-];
 
 const nearbyStations = [
   {
@@ -86,13 +60,9 @@ export const Route = createFileRoute("/station/")({
 });
 
 function StationPage() {
-  const [pkgOpen, setPkgOpen] = useState(false);
-  const [activePkg, setActivePkg] = useState<string | null>(null);
-  const [chosenHospital, setChosenHospital] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const goDetail = (id: string) => navigate({ to: "/station/$id", params: { id } });
-  const pkg = specialPackages.find((p) => p.id === activePkg);
 
   const categories = [
     {
@@ -101,7 +71,7 @@ function StationPage() {
       desc: "控糖 / 低盐 / 高蛋白",
       icon: Soup,
       cls: "from-emerald-500 to-teal-600",
-      onClick: () => setPkgOpen(true),
+      onClick: () => navigate({ to: "/station/meals" }),
     },
     {
       key: "goods",
@@ -109,10 +79,7 @@ function StationPage() {
       desc: "血压计 / 血糖仪 / 保健品",
       icon: ShoppingBag,
       cls: "from-amber-500 to-orange-600",
-      onClick: () =>
-        toast.success("已为您打开健康商品", {
-          description: "医疗器械 / 保健品直邮驿站自提",
-        }),
+      onClick: () => navigate({ to: "/station/goods" }),
     },
     {
       key: "service",
@@ -120,7 +87,7 @@ function StationPage() {
       desc: "推拿 / 理疗 / 上门问诊",
       icon: HeartPulse,
       cls: "from-primary to-cyan-600",
-      onClick: () => goDetail("sunshine"),
+      onClick: () => navigate({ to: "/station/booking" }),
     },
   ];
 
@@ -149,11 +116,7 @@ function StationPage() {
               <p className="mt-1 text-4xl font-bold">¥ {myStation.balance}</p>
             </div>
             <button
-              onClick={() =>
-                toast.success("充值成功 +¥100", {
-                  description: "微信支付 · 当前余额 ¥386",
-                })
-              }
+              onClick={() => navigate({ to: "/station/wallet" })}
               className="flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-primary shadow-soft active:scale-95"
             >
               <Wallet className="h-6 w-6" />
@@ -207,11 +170,7 @@ function StationPage() {
 
           <div className="mt-4 grid grid-cols-2 gap-3">
             <button
-              onClick={() =>
-                toast.success(`待自提 ${myStation.pickup} 件`, {
-                  description: `凭取件码 ${myStation.pickupCode} 到驿站领取`,
-                })
-              }
+              onClick={() => navigate({ to: "/station/pickup" })}
               className="flex items-center gap-3 rounded-2xl bg-primary-soft p-4 text-left active:scale-95"
             >
               <Package className="h-7 w-7 text-primary" />
@@ -221,7 +180,7 @@ function StationPage() {
               </div>
             </button>
             <button
-              onClick={() => goDetail(myStation.id)}
+              onClick={() => navigate({ to: "/station/booking" })}
               className="flex items-center gap-3 rounded-2xl bg-accent-soft p-4 text-left active:scale-95"
             >
               <CalendarCheck className="h-7 w-7 text-accent" />
@@ -291,120 +250,6 @@ function StationPage() {
           ))}
         </div>
       </section>
-
-      {/* 营养餐 · 专病套餐 Sheet */}
-      <Sheet
-        open={pkgOpen}
-        onOpenChange={(v) => {
-          setPkgOpen(v);
-          if (!v) {
-            setActivePkg(null);
-            setChosenHospital(null);
-          }
-        }}
-      >
-        <SheetContent side="bottom" className="max-h-[88vh] overflow-y-auto rounded-t-3xl p-5">
-          {!activePkg ? (
-            <>
-              <SheetHeader className="text-left">
-                <SheetTitle className="flex items-center gap-2 text-xl">
-                  <Soup className="h-5 w-5 text-primary" />
-                  营养餐 · 专病套餐
-                </SheetTitle>
-                <SheetDescription>
-                  按病种定制 · 营养师审核 · 可配送至各大三甲医院
-                </SheetDescription>
-              </SheetHeader>
-              <div className="mt-3 space-y-2">
-                {specialPackages.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => setActivePkg(p.id)}
-                    className="flex w-full items-center gap-3 rounded-2xl bg-muted/50 p-3 text-left active:scale-[0.99]"
-                  >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                      <Soup className="h-5 w-5" />
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-base font-bold">{p.name}</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">{p.desc}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-bold text-primary">{p.price}</p>
-                      <ChevronRight className="ml-auto h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </>
-          ) : (
-            <>
-              <SheetHeader className="text-left">
-                <SheetTitle className="flex items-center gap-2 text-xl">
-                  <Hospital className="h-5 w-5 text-primary" />
-                  {pkg?.name}
-                </SheetTitle>
-                <SheetDescription>
-                  {pkg?.desc} · 选择您要直送的三甲医院
-                </SheetDescription>
-              </SheetHeader>
-              <div className="mt-3 space-y-2">
-                {hospitals.map((h) => {
-                  const active = chosenHospital === h.id;
-                  return (
-                    <button
-                      key={h.id}
-                      onClick={() => setChosenHospital(h.id)}
-                      className={cn(
-                        "flex w-full items-center gap-3 rounded-2xl border-2 p-3 text-left active:scale-[0.99]",
-                        active ? "border-primary bg-primary-soft" : "border-transparent bg-muted/50",
-                      )}
-                    >
-                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-primary">
-                        <Hospital className="h-5 w-5" />
-                      </span>
-                      <div className="flex-1">
-                        <p className="text-base font-bold">{h.name}</p>
-                        <p className="text-xs text-muted-foreground">{h.tag}</p>
-                      </div>
-                      {active && <Check className="h-5 w-5 text-primary" />}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-4 flex gap-2">
-                <button
-                  onClick={() => {
-                    setActivePkg(null);
-                    setChosenHospital(null);
-                  }}
-                  className="flex min-h-[48px] flex-1 items-center justify-center rounded-xl border-2 border-muted text-sm font-bold text-muted-foreground"
-                >
-                  返回
-                </button>
-                <button
-                  disabled={!chosenHospital}
-                  onClick={() => {
-                    const h = hospitals.find((x) => x.id === chosenHospital);
-                    toast.success(`${pkg?.name} · 已预约`, {
-                      description: `配送至 ${h?.name} · 营养师 1 小时内联系您`,
-                    });
-                    setPkgOpen(false);
-                    setActivePkg(null);
-                    setChosenHospital(null);
-                  }}
-                  className={cn(
-                    "flex min-h-[48px] flex-[2] items-center justify-center rounded-xl text-sm font-bold text-primary-foreground shadow-soft",
-                    chosenHospital ? "bg-primary active:scale-[0.98]" : "bg-muted-foreground/40",
-                  )}
-                >
-                  确认预约
-                </button>
-              </div>
-            </>
-          )}
-        </SheetContent>
-      </Sheet>
     </MobileLayout>
   );
 }
