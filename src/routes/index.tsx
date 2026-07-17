@@ -18,6 +18,7 @@ import {
   Leaf,
   PlayCircle,
   X,
+  ScanLine,
 } from "lucide-react";
 
 import { toast } from "sonner";
@@ -25,7 +26,7 @@ import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
 import avatarFull from "@/assets/avatar-fullbody.png";
-import dragonflyLogo from "@/assets/dragonfly-logo.png";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -147,6 +148,15 @@ const messages: Msg[] = [
 ];
 
 const REACTIONS = ["❤️", "✨", "👋", "🌸", "😊", "🎉", "💚"];
+
+const aiShortcuts = [
+  { label: "用药咨询", icon: Pill, to: "/chat/xiaoqing", bg: "bg-gradient-to-br from-rose-400 to-rose-500" },
+  { label: "饮食建议", icon: UtensilsCrossed, to: "/health/meal", bg: "bg-gradient-to-br from-amber-400 to-orange-500" },
+  { label: "运动计划", icon: Footprints, to: "/health/workout", bg: "bg-gradient-to-br from-emerald-400 to-green-500" },
+  { label: "报告解读", icon: ScanLine, to: "/health/ocr", bg: "bg-gradient-to-br from-teal-400 to-cyan-500" },
+  { label: "找医生", icon: Stethoscope, to: "/messages/doctor/li", bg: "bg-gradient-to-br from-primary to-cyan-600" },
+];
+
 
 function HomePage() {
   const [idx, setIdx] = useState(0);
@@ -311,7 +321,29 @@ function HomePage() {
           </div>
         </section>
 
+        {/* 快捷 AI 功能 */}
+        <section className="relative z-10 mx-6 mt-4">
+          <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1">
+            {aiShortcuts.map((s) => {
+              const Icon = s.icon;
+              return (
+                <button
+                  key={s.label}
+                  onClick={() => navigate({ to: s.to })}
+                  className="flex shrink-0 items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-semibold text-foreground shadow-card transition-transform active:scale-95"
+                >
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-full ${s.bg}`}>
+                    <Icon className="h-4 w-4 text-white" strokeWidth={2.5} />
+                  </span>
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         {/* 3D 虚拟人 · 自适应填充剩余区域 */}
+
         <div className="relative z-0 flex flex-1 flex-col items-center justify-end py-2 min-h-0">
           <button
             onClick={handleAvatarTap}
@@ -395,118 +427,12 @@ function HomePage() {
         <span className="whitespace-nowrap text-xs font-bold text-white">数字中医人</span>
       </button>
 
-      {/* 悬浮 · 和我聊一聊（长按可拖动到任意位置） */}
-      <DraggableChatFab onTap={() => navigate({ to: "/chat/xiaoqing" })} />
       {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
+
     </MobileLayout>
   );
 }
 
-function DraggableChatFab({ onTap }: { onTap: () => void }) {
-  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
-  const [dragging, setDragging] = useState(false);
-  const [hint, setHint] = useState(false);
-  const stateRef = useRef({
-    startX: 0,
-    startY: 0,
-    originX: 0,
-    originY: 0,
-    moved: false,
-    longPress: false,
-    timer: null as ReturnType<typeof setTimeout> | null,
-    nodeW: 0,
-    nodeH: 0,
-  }).current;
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const margin = 16;
-    const w = 168;
-    const h = 64;
-    setPos({ x: window.innerWidth - w - margin, y: window.innerHeight - h - 112 });
-  }, []);
-
-  const clearTimer = () => {
-    if (stateRef.timer) {
-      clearTimeout(stateRef.timer);
-      stateRef.timer = null;
-    }
-  };
-
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!pos) return;
-    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-    stateRef.nodeW = rect.width;
-    stateRef.nodeH = rect.height;
-    stateRef.startX = e.clientX;
-    stateRef.startY = e.clientY;
-    stateRef.originX = pos.x;
-    stateRef.originY = pos.y;
-    stateRef.moved = false;
-    stateRef.longPress = false;
-    clearTimer();
-    stateRef.timer = setTimeout(() => {
-      stateRef.longPress = true;
-      setDragging(true);
-      setHint(true);
-      if (navigator.vibrate) navigator.vibrate(20);
-    }, 320);
-  };
-
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const dx = e.clientX - stateRef.startX;
-    const dy = e.clientY - stateRef.startY;
-    if (!stateRef.moved && Math.hypot(dx, dy) > 6) stateRef.moved = true;
-    // 未长按前若发生滚动/滑动，取消长按
-    if (!stateRef.longPress && stateRef.moved) clearTimer();
-    if (!stateRef.longPress) return;
-    const maxX = window.innerWidth - stateRef.nodeW - 4;
-    const maxY = window.innerHeight - stateRef.nodeH - 4;
-    setPos({
-      x: Math.min(Math.max(4, stateRef.originX + dx), maxX),
-      y: Math.min(Math.max(4, stateRef.originY + dy), maxY),
-    });
-  };
-
-  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    try {
-      (e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId);
-    } catch {}
-    const wasLong = stateRef.longPress;
-    const wasMoved = stateRef.moved;
-    clearTimer();
-    stateRef.longPress = false;
-    setDragging(false);
-    setTimeout(() => setHint(false), 600);
-    if (!wasLong && !wasMoved) onTap();
-  };
-
-  if (!pos) return null;
-
-  return (
-    <div
-      role="button"
-      aria-label="和蜻蜓聊一聊（长按可拖动）"
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
-      style={{ left: pos.x, top: pos.y, touchAction: "none" }}
-      className={`fixed z-50 flex select-none items-center gap-2 rounded-full bg-gradient-warm py-2 pl-2 pr-4 shadow-elevated transition-transform ${
-        dragging ? "scale-110 ring-4 ring-white/60" : "active:scale-95"
-      }`}
-    >
-      <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white">
-        <img src={dragonflyLogo} alt="" width={36} height={36} className="h-9 w-9 pointer-events-none" />
-        <span className="absolute right-0 top-0 h-3 w-3 animate-pulse rounded-full bg-success ring-2 ring-white" />
-      </span>
-      <span className="pointer-events-none text-sm font-bold text-white">
-        {hint ? "拖到任意位置 ✋" : "和我聊一聊"}
-      </span>
-    </div>
-  );
-}
 
 
 
