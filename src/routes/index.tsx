@@ -330,7 +330,7 @@ function HomePage() {
         <div className="relative z-0 flex flex-1 flex-col items-center justify-end py-2 min-h-0">
           <button
             onClick={handleAvatarTap}
-            aria-label="点击虚拟人和蜻蜓互动"
+            aria-label="点击蜻蜓医生互动"
             className="group relative flex min-h-0 flex-1 items-end justify-center"
           >
             <span className="pointer-events-none absolute -bottom-1 left-1/2 h-6 w-40 -translate-x-1/2 rounded-[50%] bg-primary/25 blur-2xl" />
