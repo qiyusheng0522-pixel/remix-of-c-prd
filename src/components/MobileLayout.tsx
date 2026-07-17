@@ -15,14 +15,13 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <PhoneFrame>
-      <div className="mx-auto flex min-h-screen max-w-[480px] flex-col bg-gradient-bg">
-        <main className="flex-1 pb-28">{children}</main>
+      <div className="flex min-h-full flex-col bg-gradient-bg">
+        <main className="flex-1 pb-4">{children}</main>
 
         <nav
           aria-label="主导航"
           className={cn(
-            "fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 border-t border-border bg-card/95 pb-safe backdrop-blur-md",
-            "sm:rounded-b-[48px]"
+            "sticky bottom-0 z-50 w-full border-t border-border bg-card pb-safe",
           )}
         >
           <ul className="grid grid-cols-4 items-end">
