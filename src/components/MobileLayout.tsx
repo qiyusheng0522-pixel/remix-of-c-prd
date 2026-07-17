@@ -15,7 +15,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <PhoneFrame>
-      <div className="flex min-h-full flex-col bg-gradient-bg">
+      <div className="flex min-h-dvh flex-col bg-gradient-bg sm:min-h-full">
         <main className="flex-1 pb-4">{children}</main>
 
         <nav
