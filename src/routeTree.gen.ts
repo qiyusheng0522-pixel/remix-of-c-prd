@@ -18,6 +18,7 @@ import { Route as GamesRouteImport } from './routes/games'
 import { Route as CircleRouteImport } from './routes/circle'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StationIndexRouteImport } from './routes/station.index'
 import { Route as MeIndexRouteImport } from './routes/me.index'
 import { Route as HmIndexRouteImport } from './routes/hm.index'
 import { Route as CircleIndexRouteImport } from './routes/circle.index'
@@ -190,6 +191,11 @@ const AdminRoute = AdminRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StationIndexRoute = StationIndexRouteImport.update({
+  id: '/station/',
+  path: '/station/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MeIndexRoute = MeIndexRouteImport.update({
@@ -926,6 +932,7 @@ export interface FileRoutesByFullPath {
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
   '/me/': typeof MeIndexRoute
+  '/station/': typeof StationIndexRoute
   '/admin/doctor/billing': typeof AdminDoctorBillingRoute
   '/admin/doctor/consult': typeof AdminDoctorConsultRoute
   '/admin/doctor/followup': typeof AdminDoctorFollowupRoute
@@ -1064,6 +1071,7 @@ export interface FileRoutesByTo {
   '/circle': typeof CircleIndexRoute
   '/hm': typeof HmIndexRoute
   '/me': typeof MeIndexRoute
+  '/station': typeof StationIndexRoute
   '/admin/doctor/billing': typeof AdminDoctorBillingRoute
   '/admin/doctor/consult': typeof AdminDoctorConsultRoute
   '/admin/doctor/followup': typeof AdminDoctorFollowupRoute
@@ -1204,6 +1212,7 @@ export interface FileRoutesById {
   '/circle/': typeof CircleIndexRoute
   '/hm/': typeof HmIndexRoute
   '/me/': typeof MeIndexRoute
+  '/station/': typeof StationIndexRoute
   '/admin/doctor/billing': typeof AdminDoctorBillingRoute
   '/admin/doctor/consult': typeof AdminDoctorConsultRoute
   '/admin/doctor/followup': typeof AdminDoctorFollowupRoute
@@ -1345,6 +1354,7 @@ export interface FileRouteTypes {
     | '/circle/'
     | '/hm/'
     | '/me/'
+    | '/station/'
     | '/admin/doctor/billing'
     | '/admin/doctor/consult'
     | '/admin/doctor/followup'
@@ -1483,6 +1493,7 @@ export interface FileRouteTypes {
     | '/circle'
     | '/hm'
     | '/me'
+    | '/station'
     | '/admin/doctor/billing'
     | '/admin/doctor/consult'
     | '/admin/doctor/followup'
@@ -1622,6 +1633,7 @@ export interface FileRouteTypes {
     | '/circle/'
     | '/hm/'
     | '/me/'
+    | '/station/'
     | '/admin/doctor/billing'
     | '/admin/doctor/consult'
     | '/admin/doctor/followup'
@@ -1742,6 +1754,7 @@ export interface RootRouteChildren {
   StationIdRoute: typeof StationIdRoute
   HmIndexRoute: typeof HmIndexRoute
   MeIndexRoute: typeof MeIndexRoute
+  StationIndexRoute: typeof StationIndexRoute
   MessagesDoctorIdRoute: typeof MessagesDoctorIdRoute
 }
 
@@ -1808,6 +1821,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/station/': {
+      id: '/station/'
+      path: '/station'
+      fullPath: '/station/'
+      preLoaderRoute: typeof StationIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/me/': {
@@ -3020,6 +3040,7 @@ const rootRouteChildren: RootRouteChildren = {
   StationIdRoute: StationIdRoute,
   HmIndexRoute: HmIndexRoute,
   MeIndexRoute: MeIndexRoute,
+  StationIndexRoute: StationIndexRoute,
   MessagesDoctorIdRoute: MessagesDoctorIdRoute,
 }
 export const routeTree = rootRouteImport

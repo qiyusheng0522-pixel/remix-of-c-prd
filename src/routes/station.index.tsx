@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   MapPin,
@@ -408,6 +408,3 @@ function StationPage() {
     </MobileLayout>
   );
 }
-
-// Link is imported for potential future use in "我的驿站" detail navigation
-void Link;
