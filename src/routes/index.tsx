@@ -374,9 +374,9 @@ function HomePage() {
           {/* 唯一入口：AI 助手 */}
           <button
             onClick={() => navigate({ to: "/chat/xiaoqing" })}
-            className="mt-2 flex items-center gap-2 rounded-full bg-gradient-warm px-5 py-2.5 text-sm font-bold text-white shadow-elevated active:scale-95"
+            className="mt-2 flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-bold text-foreground shadow-card active:scale-95"
           >
-            <Sparkles className="h-4 w-4" />
+            <Sparkles className="h-4 w-4 text-primary" />
             AI 助手 · 和我聊一聊
           </button>
           <p className="mt-1 text-[11px] text-muted-foreground">大模型驱动 · 24 小时在线陪伴</p>
