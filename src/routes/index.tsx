@@ -18,6 +18,7 @@ import {
   Leaf,
   PlayCircle,
   X,
+  ScanLine,
 } from "lucide-react";
 
 import { toast } from "sonner";
@@ -25,7 +26,7 @@ import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
 import avatarFull from "@/assets/avatar-fullbody.png";
-import dragonflyLogo from "@/assets/dragonfly-logo.png";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
