@@ -149,6 +149,15 @@ const messages: Msg[] = [
 
 const REACTIONS = ["❤️", "✨", "👋", "🌸", "😊", "🎉", "💚"];
 
+const aiShortcuts = [
+  { label: "用药咨询", icon: Pill, to: "/chat/xiaoqing", bg: "bg-gradient-to-br from-rose-400 to-rose-500" },
+  { label: "饮食建议", icon: UtensilsCrossed, to: "/health/meal", bg: "bg-gradient-to-br from-amber-400 to-orange-500" },
+  { label: "运动计划", icon: Footprints, to: "/health/workout", bg: "bg-gradient-to-br from-emerald-400 to-green-500" },
+  { label: "报告解读", icon: ScanLine, to: "/health/ocr", bg: "bg-gradient-to-br from-teal-400 to-cyan-500" },
+  { label: "找医生", icon: Stethoscope, to: "/messages/doctor/li", bg: "bg-gradient-to-br from-primary to-cyan-600" },
+];
+
+
 function HomePage() {
   const [idx, setIdx] = useState(0);
   const msg = messages[idx];
