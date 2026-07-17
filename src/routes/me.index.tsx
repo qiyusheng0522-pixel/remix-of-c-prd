@@ -18,7 +18,6 @@ import {
   ClipboardCheck,
   User,
   Crown,
-  Cloud,
   X,
 } from "lucide-react";
 import { MobileLayout } from "@/components/MobileLayout";
@@ -113,24 +112,6 @@ function MePage() {
         </div>
       </section>
 
-      {/* 线下数据回传 */}
-      <section className="mt-4 px-5">
-        <Link
-          to="/me/records"
-          className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 p-4 shadow-card active:scale-[0.99]"
-        >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary text-white">
-            <Cloud className="h-6 w-6" />
-          </div>
-          <div className="flex-1">
-            <p className="text-base font-bold text-foreground">线下数据回传 · 智能生成方案</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              近 30 天 7 次服务、12 次用餐已并入档案
-            </p>
-          </div>
-          <ChevronRight className="h-5 w-5 text-muted-foreground" />
-        </Link>
-      </section>
 
       <section className="mt-4 px-5">
         <div className="overflow-hidden rounded-2xl bg-card shadow-card">
