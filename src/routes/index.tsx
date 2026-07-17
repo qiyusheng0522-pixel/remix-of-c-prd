@@ -169,6 +169,7 @@ function HomePage() {
   const [avatarPose, setAvatarPose] = useState<"idle" | "wave" | "jump" | "shake">("idle");
   const [bursts, setBursts] = useState<Array<{ id: number; emoji: string; x: number; y: number }>>([]);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [aiInput, setAiInput] = useState("");
   const burstId = useRef(0);
 
   useEffect(() => {
