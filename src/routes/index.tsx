@@ -281,9 +281,9 @@ function HomePage() {
             <div className="mt-5 flex items-center gap-3">
               <button
                 onClick={handleDone}
-                className="flex min-h-[64px] flex-1 items-center justify-center gap-2.5 rounded-full bg-primary px-5 text-lg font-bold text-primary-foreground shadow-card active:scale-[0.97]"
+                className="flex min-h-[64px] flex-1 items-center justify-center gap-2.5 whitespace-nowrap rounded-full bg-primary px-4 text-[17px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
               >
-                <Icon className="h-7 w-7" strokeWidth={2.5} />
+                <Icon className="h-6 w-6" strokeWidth={2.5} />
                 {msg.action}
               </button>
               <button
