@@ -13,7 +13,7 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
         className={cn(
           "relative flex h-full w-full max-w-[480px] flex-col overflow-hidden",
           "bg-[#1c1c1e] shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_28px_70px_-18px_rgba(0,0,0,0.45)]",
-          "sm:h-[96vh] sm:max-h-[1000px] sm:rounded-[52px] sm:self-center"
+          "sm:rounded-[52px]"
         )}
       >
         {/* 侧边按键 */}
