@@ -396,9 +396,8 @@ function HomePage() {
         <span className="whitespace-nowrap text-xs font-bold text-white">数字中医人</span>
       </button>
 
-      {/* 悬浮 · 和我聊一聊（长按可拖动到任意位置） */}
-      <DraggableChatFab onTap={() => navigate({ to: "/chat/xiaoqing" })} />
       {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
+
     </MobileLayout>
   );
 }
