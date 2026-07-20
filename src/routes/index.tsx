@@ -234,7 +234,7 @@ function HomePage() {
               <span className="whitespace-nowrap rounded-full bg-success/15 px-1.5 py-0.5 font-bold text-success">
                 权威背书
               </span>
-              <span className="whitespace-nowrap">协和 · 北体大 · 营养学会 ›</span>
+              <span className="whitespace-nowrap">江苏亚寰健康 ›</span>
             </button>
           </div>
           <div className="flex items-center gap-2">
