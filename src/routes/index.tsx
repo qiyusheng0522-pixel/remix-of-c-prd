@@ -27,7 +27,8 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import avatarFull from "@/assets/avatar-fullbody.png";
+import avatarFull from "@/assets/avatar-doctor.png";
+import { Users, MessageSquarePlus } from "lucide-react";
 
 
 export const Route = createFileRoute("/")({
