@@ -1,7 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
-import { z } from "zod";
 import {
   ArrowLeft,
   Search,
@@ -14,10 +12,6 @@ import {
 import { MobileLayout } from "@/components/MobileLayout";
 import { toast } from "sonner";
 
-const searchSchema = z.object({
-  disease: fallback(z.string(), "").default(""),
-});
-
 export const Route = createFileRoute("/experts")({
   head: () => ({
     meta: [
@@ -25,7 +19,9 @@ export const Route = createFileRoute("/experts")({
       { name: "description", content: "按城市、医院、专科筛选合作三甲医生，一对一图文/电话/视频咨询。" },
     ],
   }),
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (s: Record<string, unknown>) => ({
+    disease: typeof s.disease === "string" ? s.disease : "",
+  }),
   component: ExpertsPage,
 });
 
