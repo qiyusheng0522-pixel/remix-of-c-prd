@@ -27,7 +27,8 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import avatarFull from "@/assets/avatar-fullbody.png";
+import avatarFull from "@/assets/avatar-doctor.png";
+import { Users, MessageSquarePlus } from "lucide-react";
 
 
 export const Route = createFileRoute("/")({
@@ -323,6 +324,34 @@ function HomePage() {
               />
             ))}
           </div>
+        </section>
+
+        {/* 加群 · 问专家 · 显著入口 */}
+        <section className="relative z-10 mx-5 mt-3 grid grid-cols-2 gap-3">
+          <button
+            onClick={() => navigate({ to: "/circle" })}
+            className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-3 text-left text-white shadow-elevated active:scale-[0.98]"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
+              <Users className="h-6 w-6" strokeWidth={2.5} />
+            </span>
+            <div className="flex-1">
+              <div className="text-[16px] font-bold leading-tight">加入病友群</div>
+              <div className="mt-0.5 text-[11px] opacity-90">同病相伴 · 互助打卡</div>
+            </div>
+          </button>
+          <button
+            onClick={() => navigate({ to: "/experts" })}
+            className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-4 py-3 text-left text-white shadow-elevated active:scale-[0.98]"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
+              <MessageSquarePlus className="h-6 w-6" strokeWidth={2.5} />
+            </span>
+            <div className="flex-1">
+              <div className="text-[16px] font-bold leading-tight">问专家</div>
+              <div className="mt-0.5 text-[11px] opacity-90">三甲医生 · 一对一答疑</div>
+            </div>
+          </button>
         </section>
 
         {/* 3D 虚拟人 · 自适应填充剩余区域 */}

@@ -15,6 +15,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as GamesRouteImport } from './routes/games'
+import { Route as ExpertsRouteImport } from './routes/experts'
 import { Route as CircleRouteImport } from './routes/circle'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -182,6 +183,11 @@ const HealthRoute = HealthRouteImport.update({
 const GamesRoute = GamesRouteImport.update({
   id: '/games',
   path: '/games',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpertsRoute = ExpertsRouteImport.update({
+  id: '/experts',
+  path: '/experts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CircleRoute = CircleRouteImport.update({
@@ -922,6 +928,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/circle': typeof CircleRouteWithChildren
+  '/experts': typeof ExpertsRoute
   '/games': typeof GamesRoute
   '/health': typeof HealthRouteWithChildren
   '/messages': typeof MessagesRoute
@@ -1067,6 +1074,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/experts': typeof ExpertsRoute
   '/games': typeof GamesRoute
   '/health': typeof HealthRouteWithChildren
   '/messages': typeof MessagesRoute
@@ -1214,6 +1222,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/circle': typeof CircleRouteWithChildren
+  '/experts': typeof ExpertsRoute
   '/games': typeof GamesRoute
   '/health': typeof HealthRouteWithChildren
   '/messages': typeof MessagesRoute
@@ -1362,6 +1371,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/circle'
+    | '/experts'
     | '/games'
     | '/health'
     | '/messages'
@@ -1507,6 +1517,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/experts'
     | '/games'
     | '/health'
     | '/messages'
@@ -1653,6 +1664,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/circle'
+    | '/experts'
     | '/games'
     | '/health'
     | '/messages'
@@ -1800,6 +1812,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   CircleRoute: typeof CircleRouteWithChildren
+  ExpertsRoute: typeof ExpertsRoute
   GamesRoute: typeof GamesRoute
   HealthRoute: typeof HealthRouteWithChildren
   MessagesRoute: typeof MessagesRoute
@@ -1878,6 +1891,13 @@ declare module '@tanstack/react-router' {
       path: '/games'
       fullPath: '/games'
       preLoaderRoute: typeof GamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experts': {
+      id: '/experts'
+      path: '/experts'
+      fullPath: '/experts'
+      preLoaderRoute: typeof ExpertsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/circle': {
@@ -3134,6 +3154,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   CircleRoute: CircleRouteWithChildren,
+  ExpertsRoute: ExpertsRoute,
   GamesRoute: GamesRoute,
   HealthRoute: HealthRouteWithChildren,
   MessagesRoute: MessagesRoute,
@@ -3172,13 +3193,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
