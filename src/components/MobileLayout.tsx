@@ -16,7 +16,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
   return (
     <PhoneFrame>
       <div className="flex min-h-dvh flex-col bg-gradient-bg sm:min-h-full">
-        <main className="flex-1 pb-4">{children}</main>
+        <main className="flex flex-1 flex-col">{children}</main>
 
         <nav
           aria-label="主导航"
