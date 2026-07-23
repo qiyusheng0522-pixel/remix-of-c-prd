@@ -193,7 +193,7 @@ function HomePage() {
 
   return (
     <MobileLayout>
-      <div className="relative flex min-h-[calc(100dvh-72px)] flex-col sm:min-h-full">
+      <div className="relative flex min-h-[calc(100dvh-72px)] flex-1 flex-col sm:min-h-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.94_0.04_180)] via-[oklch(0.97_0.025_185)] to-[oklch(0.99_0.01_60)]" />
         <div className="pointer-events-none absolute bottom-32 left-1/2 h-40 w-72 -translate-x-1/2 rounded-[50%] bg-primary/15 blur-3xl" />
 
@@ -323,7 +323,7 @@ function HomePage() {
         </section>
 
         {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
-        <div className="sticky bottom-0 z-20 mt-auto flex flex-col items-center border-t border-border/40 bg-white/85 px-5 pb-3 pt-3 backdrop-blur-md">
+        <div className="relative z-20 mt-auto flex flex-col items-center border-t border-border/40 bg-white/85 px-5 pb-3 pt-3 backdrop-blur-md">
           <style>{`@keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}`}</style>
           <div className="mb-2 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center gap-2 pb-0.5">
