@@ -328,70 +328,10 @@ function HomePage() {
           </button>
         </section>
 
-        {/* 3D 虚拟人 · 自适应填充剩余区域 */}
-
-        <div className="relative z-0 flex flex-1 flex-col items-center justify-end py-2 min-h-0">
-          <button
-            onClick={handleAvatarTap}
-            aria-label="点击虚拟人和蜻蜓互动"
-            className="group relative flex min-h-0 flex-1 items-end justify-center"
-          >
-            <span className="pointer-events-none absolute -bottom-1 left-1/2 h-6 w-40 -translate-x-1/2 rounded-[50%] bg-primary/25 blur-2xl" />
-            <span className="pointer-events-none absolute inset-0 -z-10 m-auto h-56 w-56 animate-pulse rounded-full bg-gradient-to-br from-primary/25 via-transparent to-orange-300/25 blur-2xl" />
-            <div className="relative flex h-full max-h-[20%] items-end">
-              <div className="relative h-full">
-                <img
-                  src={avatarFull}
-                  alt="健康管家蜻蜓"
-                  width={768}
-                  height={1536}
-                  className="h-full w-auto object-contain drop-shadow-2xl"
-                  style={{
-                    transformOrigin: "50% 95%",
-                    animation:
-                      avatarPose === "wave"
-                        ? "avatarWave 0.8s ease-in-out"
-                        : avatarPose === "jump"
-                        ? "avatarJump 0.7s cubic-bezier(.34,1.56,.64,1)"
-                        : avatarPose === "shake"
-                        ? "avatarShake 0.6s ease-in-out"
-                        : `avatarIdle 5.5s ease-in-out infinite, avatarBreath 3.2s ease-in-out infinite, avatarSway 7s ease-in-out infinite`,
-                  }}
-                />
-              </div>
-
-            </div>
-            {/* 引导互动 */}
-            <span className="absolute -top-1 right-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary shadow-card backdrop-blur-md animate-bounce">
-              点我互动 ✨
-            </span>
-            {/* 漂浮表情爆点 */}
-            {bursts.map((b) => (
-              <span
-                key={b.id}
-                className="pointer-events-none absolute text-2xl"
-                style={{ left: b.x, top: b.y, animation: "burstFloat 1.3s ease-out forwards" }}
-              >
-                {b.emoji}
-              </span>
-            ))}
-          </button>
-          <style>{`
-            @keyframes avatarIdle{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(-1.2deg)}50%{transform:translateY(-4px) rotate(0deg)}75%{transform:translateY(-10px) rotate(1.2deg)}}
-            @keyframes avatarBreath{0%,100%{filter:drop-shadow(0 10px 12px rgba(0,0,0,0.18))}50%{filter:drop-shadow(0 14px 18px rgba(0,0,0,0.22)) brightness(1.03)}}
-            @keyframes avatarSway{0%,100%{transform-origin:50% 100%}25%{}50%{}}
-            @keyframes avatarWave{0%,100%{transform:rotate(0) translateY(-4px)}20%{transform:rotate(-6deg) translateY(-10px)}50%{transform:rotate(6deg) translateY(-14px)}80%{transform:rotate(-4deg) translateY(-8px)}}
-            @keyframes avatarJump{0%{transform:translateY(0) scale(1,1)}25%{transform:translateY(4px) scale(1.06,0.94)}55%{transform:translateY(-38px) scale(0.96,1.06)}80%{transform:translateY(0) scale(1.04,0.96)}100%{transform:translateY(0) scale(1,1)}}
-            @keyframes avatarShake{0%,100%{transform:translateX(0) rotate(0)}15%{transform:translateX(-8px) rotate(-3deg)}30%{transform:translateX(8px) rotate(3deg)}45%{transform:translateX(-6px) rotate(-2deg)}60%{transform:translateX(6px) rotate(2deg)}80%{transform:translateX(-3px) rotate(-1deg)}}
-            @keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}
-            @keyframes burstFloat{0%{transform:translateY(0) scale(0.6);opacity:0}20%{opacity:1;transform:translateY(-10px) scale(1.15)}100%{transform:translateY(-90px) scale(0.9);opacity:0}}
-            @keyframes avatarBlink{0%,92%,100%{transform:scaleY(1)}94%,97%{transform:scaleY(0.1)}}
-          `}</style>
-
-
-          {/* AI 输入框 · 首页直达 */}
-          {/* 快捷 AI 咨询 · 在输入框上方 */}
-          <div className="mb-2 w-full max-w-sm overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
+        <div className="relative z-10 mt-auto flex flex-col items-center px-5 pb-3 pt-3">
+          <style>{`@keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}`}</style>
+          <div className="mb-2 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center gap-2 pb-0.5">
               {aiShortcuts.map((s) => {
                 const SIcon = s.icon;
@@ -415,7 +355,7 @@ function HomePage() {
               navigate({ to: "/chat/xiaoqing", search: q ? { message: q } : undefined });
               setAiInput("");
             }}
-            className="mt-2 w-full max-w-sm"
+            className="w-full"
           >
             <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 shadow-card focus-within:ring-2 focus-within:ring-primary/20">
               <Sparkles className="h-5 w-5 shrink-0 text-primary" />
