@@ -370,6 +370,7 @@ function HomePage() {
       </button>
 
       {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
+      {showGroupQR && <GroupQRModal onClose={() => setShowGroupQR(false)} />}
 
     </MobileLayout>
   );
