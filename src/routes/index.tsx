@@ -193,12 +193,12 @@ function HomePage() {
 
   return (
     <MobileLayout>
-      <div className="relative flex min-h-[calc(100vh-96px)] flex-col overflow-hidden">
+      <div className="relative flex h-[calc(100dvh-72px)] flex-col overflow-hidden sm:h-full">
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.94_0.04_180)] via-[oklch(0.97_0.025_185)] to-[oklch(0.99_0.01_60)]" />
         <div className="pointer-events-none absolute bottom-32 left-1/2 h-40 w-72 -translate-x-1/2 rounded-[50%] bg-primary/15 blur-3xl" />
 
         {/* 顶部 */}
-        <header className="relative z-10 flex items-center justify-between px-6 pt-12">
+        <header className="relative z-10 flex items-center justify-between px-6 pt-10">
           <div>
             <p className="text-base text-muted-foreground">{greeting}</p>
             <h1 className="mt-0.5 text-2xl font-bold text-foreground">王阿姨</h1>
@@ -235,65 +235,59 @@ function HomePage() {
         </header>
 
         {/* 对话气泡 · 消息 + 操作一体化 · 适老放大版 */}
-        <section className="relative z-10 mx-5 mt-6">
+        <section className="relative z-10 mx-5 mt-4">
           <div
             key={bubbleKey}
-            className="relative rounded-[32px] rounded-bl-md bg-white px-6 py-5 shadow-elevated"
+            className="relative rounded-[28px] rounded-bl-md bg-white px-5 py-4 shadow-elevated"
             style={{ animation: "bubblePop 0.45s cubic-bezier(.34,1.56,.64,1)" }}
           >
-            <div className="mb-3 flex items-center gap-2.5">
+            <div className="mb-2 flex items-center gap-2.5">
               <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-success" />
               <span className="text-base font-semibold text-primary">蜻蜓医生</span>
               <span className="ml-auto rounded-full bg-primary-soft px-3 py-1 text-[13px] font-semibold text-primary">
                 {msg.category}
               </span>
             </div>
-            <p className="whitespace-pre-line text-[23px] font-semibold leading-[1.6] text-foreground">
+            <p className="whitespace-pre-line text-[18px] font-semibold leading-[1.5] text-foreground">
               {msg.text}
-              <span className="ml-1 inline-block h-6 w-0.5 translate-y-1 animate-pulse bg-primary align-middle" />
+              <span className="ml-1 inline-block h-5 w-0.5 translate-y-1 animate-pulse bg-primary align-middle" />
             </p>
             {/* 操作区：主按钮 + 等会儿 + 说话 */}
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-3 flex items-center gap-2">
               <button
                 onClick={handleDone}
-                className="flex min-h-[64px] flex-1 items-center justify-center gap-2.5 whitespace-nowrap rounded-full bg-primary px-4 text-[17px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
+                className="flex min-h-[52px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 text-[15px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
               >
-                <Icon className="h-6 w-6" strokeWidth={2.5} />
+                <Icon className="h-5 w-5" strokeWidth={2.5} />
                 {msg.action}
               </button>
               <button
                 onClick={handleLater}
                 aria-label="稍后再说"
-                className="flex h-[64px] shrink-0 items-center justify-center gap-1.5 rounded-full bg-muted px-5 text-base font-semibold text-muted-foreground shadow-card active:scale-95"
+                className="flex h-[52px] shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-4 text-sm font-semibold text-muted-foreground shadow-card active:scale-95"
               >
-                <Clock className="h-6 w-6" />
+                <Clock className="h-5 w-5" />
                 稍后
               </button>
               <button
                 onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
                 aria-label="对蜻蜓说话"
-                className="flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
+                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
               >
-                <Mic className="h-7 w-7" />
+                <Mic className="h-6 w-6" />
               </button>
             </div>
           </div>
           <div className="ml-6 -mt-px h-0 w-0 border-l-[16px] border-r-[16px] border-t-[16px] border-l-transparent border-r-transparent border-t-white drop-shadow-sm" />
-          {/* 追随气泡尾部的两个小圆 · 让对话更"真"一点 */}
-          <div className="ml-3 mt-0.5 flex items-center gap-1">
-            <span className="block h-2.5 w-2.5 rounded-full bg-white/95 shadow-sm" />
-            <span className="block h-2 w-2 rounded-full bg-white/85 shadow-sm" />
-            <span className="block h-1.5 w-1.5 rounded-full bg-white/70" />
-          </div>
           {/* 消息切换指示点 */}
-          <div className="mt-3 flex justify-center gap-2">
+          <div className="mt-2 flex justify-center gap-1.5">
             {messages.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setIdx(i)}
                 aria-label={`第 ${i + 1} 条消息`}
-                className={`h-2 rounded-full transition-all ${
-                  i === idx ? "w-7 bg-primary" : "w-2 bg-muted-foreground/30"
+                className={`h-1.5 rounded-full transition-all ${
+                  i === idx ? "w-5 bg-primary" : "w-1.5 bg-muted-foreground/30"
                 }`}
               />
             ))}
@@ -301,29 +295,29 @@ function HomePage() {
         </section>
 
         {/* 加群 · 问专家 · 显著入口 */}
-        <section className="relative z-10 mx-5 mt-3 grid grid-cols-2 gap-3">
+        <section className="relative z-10 mx-5 mt-2 grid grid-cols-2 gap-2">
           <button
             onClick={() => navigate({ to: "/circle" })}
-            className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-3 text-left text-white shadow-elevated active:scale-[0.98]"
+            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <Users className="h-6 w-6" strokeWidth={2.5} />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
+              <Users className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <div className="flex-1">
-              <div className="text-[16px] font-bold leading-tight">加入病友群</div>
-              <div className="mt-0.5 text-[11px] opacity-90">同病相伴 · 互助打卡</div>
+              <div className="text-[14px] font-bold leading-tight">加入病友群</div>
+              <div className="mt-0.5 text-[10px] opacity-90">同病相伴 · 互助打卡</div>
             </div>
           </button>
           <button
             onClick={() => navigate({ to: "/experts" })}
-            className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-4 py-3 text-left text-white shadow-elevated active:scale-[0.98]"
+            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <MessageSquarePlus className="h-6 w-6" strokeWidth={2.5} />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
+              <MessageSquarePlus className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <div className="flex-1">
-              <div className="text-[16px] font-bold leading-tight">问专家</div>
-              <div className="mt-0.5 text-[11px] opacity-90">三甲医生 · 一对一答疑</div>
+              <div className="text-[14px] font-bold leading-tight">问专家</div>
+              <div className="mt-0.5 text-[10px] opacity-90">三甲医生 · 一对一答疑</div>
             </div>
           </button>
         </section>
