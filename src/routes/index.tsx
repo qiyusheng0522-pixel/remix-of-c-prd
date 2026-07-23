@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import doctorAvatar from "@/assets/dragonfly-doctor.png.asset.json";
+import doctorAvatar from "@/assets/doctor-avatar-3d.png";
 
 
 
@@ -298,7 +298,7 @@ function HomePage() {
         {/* 3D 电子医生形象 · 中部点缀 */}
         <div className="relative z-0 mx-5 mt-1 flex flex-1 items-center justify-center overflow-hidden">
           <img
-            src={doctorAvatar.url}
+            src={doctorAvatar}
             alt="蜻蜓电子医生"
             width={1024}
             height={1024}
