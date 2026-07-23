@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bell,
   Mic,
@@ -27,7 +27,6 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import avatarFull from "@/assets/avatar-doctor.png";
 import { Users, MessageSquarePlus } from "lucide-react";
 
 
@@ -150,8 +149,6 @@ const messages: Msg[] = [
   },
 ];
 
-const REACTIONS = ["❤️", "✨", "👋", "🌸", "😊", "🎉", "💚"];
-
 const aiShortcuts = [
   { label: "寻医", icon: Stethoscope, to: "/messages/doctor/li" },
   { label: "报告解读", icon: ScanLine, to: "/health/ocr" },
@@ -168,11 +165,8 @@ function HomePage() {
   const Icon = msg.icon;
   const [greeting, setGreeting] = useState("您好");
   const [bubbleKey, setBubbleKey] = useState(0);
-  const [avatarPose, setAvatarPose] = useState<"idle" | "wave" | "jump" | "shake">("idle");
-  const [bursts, setBursts] = useState<Array<{ id: number; emoji: string; x: number; y: number }>>([]);
   const [showTutorial, setShowTutorial] = useState(false);
   const [aiInput, setAiInput] = useState("");
-  const burstId = useRef(0);
 
   useEffect(() => {
     logoutAdmin();
@@ -183,26 +177,6 @@ function HomePage() {
     setBubbleKey((k) => k + 1);
   }, [idx]);
   const navigate = useNavigate();
-
-  const handleAvatarTap = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const poses: Array<"wave" | "jump" | "shake"> = ["wave", "jump", "shake"];
-    setAvatarPose(poses[Math.floor(Math.random() * poses.length)]);
-    setTimeout(() => setAvatarPose("idle"), 700);
-    // 生成 3 个漂浮的表情
-    const newBursts = Array.from({ length: 3 }).map((_, i) => ({
-      id: ++burstId.current,
-      emoji: REACTIONS[Math.floor(Math.random() * REACTIONS.length)],
-      x: x + (Math.random() * 60 - 30),
-      y: y - 20 - i * 10,
-    }));
-    setBursts((b) => [...b, ...newBursts]);
-    setTimeout(() => {
-      setBursts((b) => b.filter((x) => !newBursts.find((n) => n.id === x.id)));
-    }, 1400);
-  };
 
   const handleDone = () => {
     if (msg.to) {
