@@ -306,16 +306,13 @@ function HomePage() {
             className="h-full max-h-[300px] w-auto object-contain drop-shadow-[0_16px_24px_rgba(16,120,90,0.16)]"
             style={{ animation: "doctorFloat 4s ease-in-out infinite" }}
           />
-          {/* 数字中医人 · 放在虚拟医生旁边 */}
+          {/* 数字中医人 · 悬浮小 ICON */}
           <button
             onClick={() => navigate({ to: "/health/tcm" })}
             aria-label="数字中医人"
-            className="ml-3 flex shrink-0 flex-col items-center gap-1.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-3 shadow-elevated active:scale-95"
+            className="absolute right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-elevated active:scale-95"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/25">
-              <Leaf className="h-5 w-5 text-white" strokeWidth={2.5} />
-            </span>
-            <span className="whitespace-nowrap text-xs font-bold text-white">数字中医人</span>
+            <Leaf className="h-5 w-5 text-white" strokeWidth={2.5} />
           </button>
           <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}`}</style>
         </div>
