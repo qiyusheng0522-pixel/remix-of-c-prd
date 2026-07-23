@@ -310,9 +310,10 @@ function HomePage() {
           <button
             onClick={() => navigate({ to: "/health/tcm" })}
             aria-label="数字中医人"
-            className="absolute right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-elevated active:scale-95"
+            className="absolute right-2 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-elevated active:scale-95"
           >
             <Leaf className="h-5 w-5 text-white" strokeWidth={2.5} />
+            <span className="mt-0.5 text-[10px] font-bold leading-none text-white">中医</span>
           </button>
           <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}`}</style>
         </div>
