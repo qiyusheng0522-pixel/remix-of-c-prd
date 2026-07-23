@@ -4,7 +4,7 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       {/* 移动端：直接渲染，使用浏览器原生滚动，不做外框 */}
-      <div className="sm:hidden">{children}</div>
+      <div className="relative sm:hidden">{children}</div>
 
       {/* 桌面端：显示手机外框预览 */}
       <div

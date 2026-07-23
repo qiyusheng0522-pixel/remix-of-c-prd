@@ -303,7 +303,7 @@ function HomePage() {
             width={1024}
             height={1024}
             loading="lazy"
-            className="h-full max-h-[150px] w-auto object-contain drop-shadow-[0_16px_24px_rgba(16,120,90,0.16)]"
+            className="h-full max-h-[300px] w-auto object-contain drop-shadow-[0_16px_24px_rgba(16,120,90,0.16)]"
             style={{ animation: "doctorFloat 4s ease-in-out infinite" }}
           />
           <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}`}</style>
@@ -469,9 +469,9 @@ function GroupQRModal({ onClose }: { onClose: () => void }) {
     [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1],
   ];
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div className="absolute inset-0 z-[70] flex items-end justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="w-full max-w-md rounded-t-3xl bg-white p-5 shadow-elevated"
+        className="w-full rounded-t-3xl bg-white p-5 shadow-elevated sm:rounded-t-2xl"
         style={{ animation: "bubblePop 0.35s cubic-bezier(.34,1.56,.64,1)" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -490,7 +490,7 @@ function GroupQRModal({ onClose }: { onClose: () => void }) {
               row.map((cell, c) => (
                 <div
                   key={`${r}-${c}`}
-                  className={`aspect-square w-4 sm:w-5 ${cell ? "bg-foreground" : "bg-white"}`}
+                  className={`aspect-square w-4 sm:w-3 ${cell ? "bg-foreground" : "bg-white"}`}
                 />
               ))
             )}
