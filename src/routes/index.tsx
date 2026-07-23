@@ -296,7 +296,7 @@ function HomePage() {
         </section>
 
         {/* 3D 电子医生形象 · 中部点缀 */}
-        <div className="pointer-events-none relative z-0 mx-5 mt-1 flex flex-1 items-center justify-center overflow-hidden">
+        <div className="relative z-0 mx-5 mt-1 flex flex-1 items-center justify-center overflow-hidden">
           <img
             src={doctorAvatar}
             alt="蜻蜓电子医生"
@@ -306,6 +306,17 @@ function HomePage() {
             className="h-full max-h-[300px] w-auto object-contain drop-shadow-[0_16px_24px_rgba(16,120,90,0.16)]"
             style={{ animation: "doctorFloat 4s ease-in-out infinite" }}
           />
+          {/* 数字中医人 · 放在虚拟医生旁边 */}
+          <button
+            onClick={() => navigate({ to: "/health/tcm" })}
+            aria-label="数字中医人"
+            className="ml-3 flex shrink-0 flex-col items-center gap-1.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-3 shadow-elevated active:scale-95"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/25">
+              <Leaf className="h-5 w-5 text-white" strokeWidth={2.5} />
+            </span>
+            <span className="whitespace-nowrap text-xs font-bold text-white">数字中医人</span>
+          </button>
           <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}`}</style>
         </div>
 
@@ -371,18 +382,6 @@ function HomePage() {
           </form>
         </div>
       </div>
-
-      {/* 悬浮 · 数字中医人（左下角入口） */}
-      <button
-        onClick={() => navigate({ to: "/health/tcm" })}
-        aria-label="数字中医人"
-        className="absolute bottom-20 left-3 z-40 flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-1.5 pl-1.5 pr-2.5 shadow-elevated active:scale-95"
-      >
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/25">
-          <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
-        </span>
-        <span className="whitespace-nowrap text-[11px] font-bold text-white">数字中医人</span>
-      </button>
 
       {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
       {showGroupQR && <GroupQRModal onClose={() => setShowGroupQR(false)} />}
