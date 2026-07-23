@@ -30,6 +30,10 @@ export const Route = createFileRoute("/station/$id")({
   component: StationDetail,
 });
 
+type ServiceItem = { name: string; price: number; desc: string; emoji: string };
+type MenuItem = { name: string; price: number; cal: number; tag: string; emoji: string };
+type PackageItem = { name: string; price: number; original?: number; desc: string; emoji: string };
+
 const stationData: Record<
   string,
   {
@@ -41,8 +45,9 @@ const stationData: Record<
     phone: string;
     distance: string;
     balance?: number;
-    services: { name: string; price: number; desc: string; emoji: string }[];
-    menu: { name: string; price: number; cal: number; tag: string; emoji: string }[];
+    services: ServiceItem[];
+    menu: MenuItem[];
+    packages: PackageItem[];
     isMine: boolean;
   }
 > = {
@@ -70,6 +75,11 @@ const stationData: Record<
       { name: "紫薯小米饭", price: 8, cal: 180, tag: "粗粮", emoji: "🍚" },
       { name: "凉拌木耳", price: 10, cal: 80, tag: "降脂", emoji: "🥗" },
     ],
+    packages: [
+      { name: "慢病调理月卡", price: 399, original: 588, desc: "含 4 次理疗 + 2 次专家问诊", emoji: "📋" },
+      { name: "营养餐 7 日卡", price: 199, original: 266, desc: "每日两餐，营养师配送到家", emoji: "🍱" },
+      { name: "健康监测季包", price: 299, original: 450, desc: "血糖/血压仪租赁 + 无限次检测", emoji: "🩺" },
+    ],
   },
   happy: {
     name: "幸福里养生驿站",
@@ -87,6 +97,10 @@ const stationData: Record<
       { name: "南瓜小米粥", price: 10, cal: 220, tag: "养胃", emoji: "🥣" },
       { name: "白灼虾", price: 32, cal: 180, tag: "高蛋白", emoji: "🍤" },
       { name: "蒜蓉西兰花", price: 16, cal: 90, tag: "高纤", emoji: "🥦" },
+    ],
+    packages: [
+      { name: "养生体验包", price: 99, original: 150, desc: "太极课 + 茶艺体验 + 健康讲座", emoji: "🎁" },
+      { name: "家庭营养周卡", price: 129, original: 180, desc: "三人份营养餐，每日配送", emoji: "🥗" },
     ],
   },
   central: {
@@ -106,6 +120,11 @@ const stationData: Record<
       { name: "营养师定制套餐 A", price: 68, cal: 520, tag: "均衡", emoji: "🍱" },
       { name: "营养师定制套餐 B", price: 78, cal: 480, tag: "控糖", emoji: "🥗" },
       { name: "降压养生套餐", price: 88, cal: 450, tag: "低钠", emoji: "🍵" },
+    ],
+    packages: [
+      { name: "旗舰体检年卡", price: 1680, original: 2580, desc: "全年 2 次深度体检 + 专家解读", emoji: "🏥" },
+      { name: "康复理疗 10 次卡", price: 1999, original: 2680, desc: "一对一康复师，可家人共用", emoji: "💆" },
+      { name: "营养餐厅月卡", price: 1888, original: 2380, desc: "每日三餐自助，营养师现场配餐", emoji: "🍽️" },
     ],
   },
 };
