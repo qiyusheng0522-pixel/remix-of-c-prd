@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import doctorAvatar from "@/assets/doctor-avatar-3d.png";
+import doctorAvatar from "@/assets/dragonfly-doctor.png.asset.json";
 
 
 
