@@ -430,3 +430,66 @@ function TutorialModal({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
+
+function GroupQRModal({ onClose }: { onClose: () => void }) {
+  const qrCells = [
+    [1,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1],
+    [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1,0,0,1,0,1,1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+    [1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1],
+    [0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [1,0,1,1,0,1,0,1,1,0,1,0,1,1,0,1,0,1,1],
+    [0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0],
+    [1,0,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1,0,1],
+    [0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0],
+    [0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,1,1,1,1,1,1,0,0,1,0,1,0,1,0,1,0,1,0],
+    [1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,1,1,1,0,1,0,0,1,0,1,0,1,0,1,0,1,0],
+    [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,0,1,0],
+    [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1],
+  ];
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="w-full max-w-md rounded-t-3xl bg-white p-5 shadow-elevated"
+        style={{ animation: "bubblePop 0.35s cubic-bezier(.34,1.56,.64,1)" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-bold">加入病友群</h3>
+            <p className="text-xs text-muted-foreground">扫码进群，和同病相怜的伙伴互助打卡</p>
+          </div>
+          <button onClick={onClose} aria-label="关闭" className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="mb-4 flex flex-col items-center rounded-2xl bg-muted/40 p-5">
+          <div className="grid gap-0.5 rounded-lg bg-white p-3 shadow-card" style={{ gridTemplateColumns: `repeat(${qrCells[0].length}, minmax(0, 1fr))` }}>
+            {qrCells.map((row, r) =>
+              row.map((cell, c) => (
+                <div
+                  key={`${r}-${c}`}
+                  className={`aspect-square w-4 sm:w-5 ${cell ? "bg-foreground" : "bg-white"}`}
+                />
+              ))
+            )}
+          </div>
+          <p className="mt-3 text-sm font-semibold text-foreground">蜻蜓健康 · 糖友互助群</p>
+          <p className="text-xs text-muted-foreground">微信扫一扫，立即加入</p>
+        </div>
+        <button
+          onClick={() => { toast.success("已保存二维码到相册"); onClose(); }}
+          className="w-full rounded-full bg-primary py-3.5 text-base font-bold text-primary-foreground shadow-card active:scale-[0.98]"
+        >
+          保存到相册
+        </button>
+      </div>
+    </div>
+  );
+}
