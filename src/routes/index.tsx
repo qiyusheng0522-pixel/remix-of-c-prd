@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bell,
   Mic,
@@ -27,7 +27,6 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import avatarFull from "@/assets/avatar-doctor.png";
 import { Users, MessageSquarePlus } from "lucide-react";
 
 
@@ -150,8 +149,6 @@ const messages: Msg[] = [
   },
 ];
 
-const REACTIONS = ["❤️", "✨", "👋", "🌸", "😊", "🎉", "💚"];
-
 const aiShortcuts = [
   { label: "寻医", icon: Stethoscope, to: "/messages/doctor/li" },
   { label: "报告解读", icon: ScanLine, to: "/health/ocr" },
@@ -168,11 +165,8 @@ function HomePage() {
   const Icon = msg.icon;
   const [greeting, setGreeting] = useState("您好");
   const [bubbleKey, setBubbleKey] = useState(0);
-  const [avatarPose, setAvatarPose] = useState<"idle" | "wave" | "jump" | "shake">("idle");
-  const [bursts, setBursts] = useState<Array<{ id: number; emoji: string; x: number; y: number }>>([]);
   const [showTutorial, setShowTutorial] = useState(false);
   const [aiInput, setAiInput] = useState("");
-  const burstId = useRef(0);
 
   useEffect(() => {
     logoutAdmin();
@@ -183,26 +177,6 @@ function HomePage() {
     setBubbleKey((k) => k + 1);
   }, [idx]);
   const navigate = useNavigate();
-
-  const handleAvatarTap = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const poses: Array<"wave" | "jump" | "shake"> = ["wave", "jump", "shake"];
-    setAvatarPose(poses[Math.floor(Math.random() * poses.length)]);
-    setTimeout(() => setAvatarPose("idle"), 700);
-    // 生成 3 个漂浮的表情
-    const newBursts = Array.from({ length: 3 }).map((_, i) => ({
-      id: ++burstId.current,
-      emoji: REACTIONS[Math.floor(Math.random() * REACTIONS.length)],
-      x: x + (Math.random() * 60 - 30),
-      y: y - 20 - i * 10,
-    }));
-    setBursts((b) => [...b, ...newBursts]);
-    setTimeout(() => {
-      setBursts((b) => b.filter((x) => !newBursts.find((n) => n.id === x.id)));
-    }, 1400);
-  };
 
   const handleDone = () => {
     if (msg.to) {
@@ -219,12 +193,12 @@ function HomePage() {
 
   return (
     <MobileLayout>
-      <div className="relative flex min-h-[calc(100vh-96px)] flex-col overflow-hidden">
+      <div className="relative flex h-[calc(100dvh-72px)] flex-col overflow-hidden sm:h-full">
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.94_0.04_180)] via-[oklch(0.97_0.025_185)] to-[oklch(0.99_0.01_60)]" />
         <div className="pointer-events-none absolute bottom-32 left-1/2 h-40 w-72 -translate-x-1/2 rounded-[50%] bg-primary/15 blur-3xl" />
 
         {/* 顶部 */}
-        <header className="relative z-10 flex items-center justify-between px-6 pt-12">
+        <header className="relative z-10 flex items-center justify-between px-6 pt-10">
           <div>
             <p className="text-base text-muted-foreground">{greeting}</p>
             <h1 className="mt-0.5 text-2xl font-bold text-foreground">王阿姨</h1>
@@ -261,65 +235,59 @@ function HomePage() {
         </header>
 
         {/* 对话气泡 · 消息 + 操作一体化 · 适老放大版 */}
-        <section className="relative z-10 mx-5 mt-6">
+        <section className="relative z-10 mx-5 mt-4">
           <div
             key={bubbleKey}
-            className="relative rounded-[32px] rounded-bl-md bg-white px-6 py-5 shadow-elevated"
+            className="relative rounded-[28px] rounded-bl-md bg-white px-5 py-4 shadow-elevated"
             style={{ animation: "bubblePop 0.45s cubic-bezier(.34,1.56,.64,1)" }}
           >
-            <div className="mb-3 flex items-center gap-2.5">
+            <div className="mb-2 flex items-center gap-2.5">
               <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-success" />
               <span className="text-base font-semibold text-primary">蜻蜓医生</span>
               <span className="ml-auto rounded-full bg-primary-soft px-3 py-1 text-[13px] font-semibold text-primary">
                 {msg.category}
               </span>
             </div>
-            <p className="whitespace-pre-line text-[23px] font-semibold leading-[1.6] text-foreground">
+            <p className="whitespace-pre-line text-[18px] font-semibold leading-[1.5] text-foreground">
               {msg.text}
-              <span className="ml-1 inline-block h-6 w-0.5 translate-y-1 animate-pulse bg-primary align-middle" />
+              <span className="ml-1 inline-block h-5 w-0.5 translate-y-1 animate-pulse bg-primary align-middle" />
             </p>
             {/* 操作区：主按钮 + 等会儿 + 说话 */}
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-3 flex items-center gap-2">
               <button
                 onClick={handleDone}
-                className="flex min-h-[64px] flex-1 items-center justify-center gap-2.5 whitespace-nowrap rounded-full bg-primary px-4 text-[17px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
+                className="flex min-h-[52px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 text-[15px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
               >
-                <Icon className="h-6 w-6" strokeWidth={2.5} />
+                <Icon className="h-5 w-5" strokeWidth={2.5} />
                 {msg.action}
               </button>
               <button
                 onClick={handleLater}
                 aria-label="稍后再说"
-                className="flex h-[64px] shrink-0 items-center justify-center gap-1.5 rounded-full bg-muted px-5 text-base font-semibold text-muted-foreground shadow-card active:scale-95"
+                className="flex h-[52px] shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-4 text-sm font-semibold text-muted-foreground shadow-card active:scale-95"
               >
-                <Clock className="h-6 w-6" />
+                <Clock className="h-5 w-5" />
                 稍后
               </button>
               <button
                 onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
                 aria-label="对蜻蜓说话"
-                className="flex h-[64px] w-[64px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
+                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
               >
-                <Mic className="h-7 w-7" />
+                <Mic className="h-6 w-6" />
               </button>
             </div>
           </div>
           <div className="ml-6 -mt-px h-0 w-0 border-l-[16px] border-r-[16px] border-t-[16px] border-l-transparent border-r-transparent border-t-white drop-shadow-sm" />
-          {/* 追随气泡尾部的两个小圆 · 让对话更"真"一点 */}
-          <div className="ml-3 mt-0.5 flex items-center gap-1">
-            <span className="block h-2.5 w-2.5 rounded-full bg-white/95 shadow-sm" />
-            <span className="block h-2 w-2 rounded-full bg-white/85 shadow-sm" />
-            <span className="block h-1.5 w-1.5 rounded-full bg-white/70" />
-          </div>
           {/* 消息切换指示点 */}
-          <div className="mt-3 flex justify-center gap-2">
+          <div className="mt-2 flex justify-center gap-1.5">
             {messages.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setIdx(i)}
                 aria-label={`第 ${i + 1} 条消息`}
-                className={`h-2 rounded-full transition-all ${
-                  i === idx ? "w-7 bg-primary" : "w-2 bg-muted-foreground/30"
+                className={`h-1.5 rounded-full transition-all ${
+                  i === idx ? "w-5 bg-primary" : "w-1.5 bg-muted-foreground/30"
                 }`}
               />
             ))}
@@ -327,97 +295,37 @@ function HomePage() {
         </section>
 
         {/* 加群 · 问专家 · 显著入口 */}
-        <section className="relative z-10 mx-5 mt-3 grid grid-cols-2 gap-3">
+        <section className="relative z-10 mx-5 mt-2 grid grid-cols-2 gap-2">
           <button
             onClick={() => navigate({ to: "/circle" })}
-            className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-4 py-3 text-left text-white shadow-elevated active:scale-[0.98]"
+            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <Users className="h-6 w-6" strokeWidth={2.5} />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
+              <Users className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <div className="flex-1">
-              <div className="text-[16px] font-bold leading-tight">加入病友群</div>
-              <div className="mt-0.5 text-[11px] opacity-90">同病相伴 · 互助打卡</div>
+              <div className="text-[14px] font-bold leading-tight">加入病友群</div>
+              <div className="mt-0.5 text-[10px] opacity-90">同病相伴 · 互助打卡</div>
             </div>
           </button>
           <button
             onClick={() => navigate({ to: "/experts" })}
-            className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-4 py-3 text-left text-white shadow-elevated active:scale-[0.98]"
+            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <MessageSquarePlus className="h-6 w-6" strokeWidth={2.5} />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
+              <MessageSquarePlus className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <div className="flex-1">
-              <div className="text-[16px] font-bold leading-tight">问专家</div>
-              <div className="mt-0.5 text-[11px] opacity-90">三甲医生 · 一对一答疑</div>
+              <div className="text-[14px] font-bold leading-tight">问专家</div>
+              <div className="mt-0.5 text-[10px] opacity-90">三甲医生 · 一对一答疑</div>
             </div>
           </button>
         </section>
 
-        {/* 3D 虚拟人 · 自适应填充剩余区域 */}
-
-        <div className="relative z-0 flex flex-1 flex-col items-center justify-end py-2 min-h-0">
-          <button
-            onClick={handleAvatarTap}
-            aria-label="点击虚拟人和蜻蜓互动"
-            className="group relative flex min-h-0 flex-1 items-end justify-center"
-          >
-            <span className="pointer-events-none absolute -bottom-1 left-1/2 h-6 w-40 -translate-x-1/2 rounded-[50%] bg-primary/25 blur-2xl" />
-            <span className="pointer-events-none absolute inset-0 -z-10 m-auto h-56 w-56 animate-pulse rounded-full bg-gradient-to-br from-primary/25 via-transparent to-orange-300/25 blur-2xl" />
-            <div className="relative flex h-full max-h-[20%] items-end">
-              <div className="relative h-full">
-                <img
-                  src={avatarFull}
-                  alt="健康管家蜻蜓"
-                  width={768}
-                  height={1536}
-                  className="h-full w-auto object-contain drop-shadow-2xl"
-                  style={{
-                    transformOrigin: "50% 95%",
-                    animation:
-                      avatarPose === "wave"
-                        ? "avatarWave 0.8s ease-in-out"
-                        : avatarPose === "jump"
-                        ? "avatarJump 0.7s cubic-bezier(.34,1.56,.64,1)"
-                        : avatarPose === "shake"
-                        ? "avatarShake 0.6s ease-in-out"
-                        : `avatarIdle 5.5s ease-in-out infinite, avatarBreath 3.2s ease-in-out infinite, avatarSway 7s ease-in-out infinite`,
-                  }}
-                />
-              </div>
-
-            </div>
-            {/* 引导互动 */}
-            <span className="absolute -top-1 right-2 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-primary shadow-card backdrop-blur-md animate-bounce">
-              点我互动 ✨
-            </span>
-            {/* 漂浮表情爆点 */}
-            {bursts.map((b) => (
-              <span
-                key={b.id}
-                className="pointer-events-none absolute text-2xl"
-                style={{ left: b.x, top: b.y, animation: "burstFloat 1.3s ease-out forwards" }}
-              >
-                {b.emoji}
-              </span>
-            ))}
-          </button>
-          <style>{`
-            @keyframes avatarIdle{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-8px) rotate(-1.2deg)}50%{transform:translateY(-4px) rotate(0deg)}75%{transform:translateY(-10px) rotate(1.2deg)}}
-            @keyframes avatarBreath{0%,100%{filter:drop-shadow(0 10px 12px rgba(0,0,0,0.18))}50%{filter:drop-shadow(0 14px 18px rgba(0,0,0,0.22)) brightness(1.03)}}
-            @keyframes avatarSway{0%,100%{transform-origin:50% 100%}25%{}50%{}}
-            @keyframes avatarWave{0%,100%{transform:rotate(0) translateY(-4px)}20%{transform:rotate(-6deg) translateY(-10px)}50%{transform:rotate(6deg) translateY(-14px)}80%{transform:rotate(-4deg) translateY(-8px)}}
-            @keyframes avatarJump{0%{transform:translateY(0) scale(1,1)}25%{transform:translateY(4px) scale(1.06,0.94)}55%{transform:translateY(-38px) scale(0.96,1.06)}80%{transform:translateY(0) scale(1.04,0.96)}100%{transform:translateY(0) scale(1,1)}}
-            @keyframes avatarShake{0%,100%{transform:translateX(0) rotate(0)}15%{transform:translateX(-8px) rotate(-3deg)}30%{transform:translateX(8px) rotate(3deg)}45%{transform:translateX(-6px) rotate(-2deg)}60%{transform:translateX(6px) rotate(2deg)}80%{transform:translateX(-3px) rotate(-1deg)}}
-            @keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}
-            @keyframes burstFloat{0%{transform:translateY(0) scale(0.6);opacity:0}20%{opacity:1;transform:translateY(-10px) scale(1.15)}100%{transform:translateY(-90px) scale(0.9);opacity:0}}
-            @keyframes avatarBlink{0%,92%,100%{transform:scaleY(1)}94%,97%{transform:scaleY(0.1)}}
-          `}</style>
-
-
-          {/* AI 输入框 · 首页直达 */}
-          {/* 快捷 AI 咨询 · 在输入框上方 */}
-          <div className="mb-2 w-full max-w-sm overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
+        <div className="relative z-10 mt-auto flex flex-col items-center px-5 pb-3 pt-3">
+          <style>{`@keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}`}</style>
+          <div className="mb-2 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center gap-2 pb-0.5">
               {aiShortcuts.map((s) => {
                 const SIcon = s.icon;
@@ -441,7 +349,7 @@ function HomePage() {
               navigate({ to: "/chat/xiaoqing", search: q ? { message: q } : undefined });
               setAiInput("");
             }}
-            className="mt-2 w-full max-w-sm"
+            className="w-full"
           >
             <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 shadow-card focus-within:ring-2 focus-within:ring-primary/20">
               <Sparkles className="h-5 w-5 shrink-0 text-primary" />
