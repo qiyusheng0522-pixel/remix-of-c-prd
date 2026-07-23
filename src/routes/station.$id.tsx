@@ -282,39 +282,102 @@ function StationDetail() {
         </section>
       )}
 
-      {/* 服务 */}
+      {/* 到店服务：单独收费项目 + 在售商品/服务包 */}
       {tab === "service" && (
-        <section className="space-y-3 px-5 pt-4">
+        <section className="space-y-4 px-5 pb-6 pt-4">
           <div className="rounded-2xl bg-primary-soft p-3 text-sm text-primary">
-            💡 选择服务 → 选日期 → 到店体验，预约成功会通知您
+            💡 到店服务包含单独收费项目，以及驿站在售的商品、服务包
           </div>
-          {s.services.map((srv) => (
-            <article key={srv.name} className="rounded-2xl bg-card p-4 shadow-card">
-              <div className="flex items-start gap-3">
-                <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-muted text-4xl">
-                  {srv.emoji}
-                </span>
-                <div className="flex-1">
-                  <p className="text-lg font-bold text-foreground">{srv.name}</p>
-                  <p className="mt-0.5 text-sm text-muted-foreground">{srv.desc}</p>
-                  <p className="mt-1 text-xl font-bold text-accent">
-                    {srv.price === 0 ? "免费体验" : `¥ ${srv.price}`}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() =>
-                  toast.success(`已预约：${srv.name}`, {
-                    description: "已选明天 10:00 到店，提醒已加入消息中心",
-                  })
-                }
-                className="mt-3 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-soft active:scale-[0.98]"
-              >
-                <CalendarCheck className="h-6 w-6" />
-                立即预约
-              </button>
-            </article>
-          ))}
+
+          {/* 单独收费项目 */}
+          <div>
+            <h3 className="mb-2 flex items-center gap-2 text-base font-bold text-foreground">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">1</span>
+              到店服务（单独收费）
+            </h3>
+            <div className="space-y-3">
+              {s.services.map((srv) => (
+                <article key={srv.name} className="rounded-2xl bg-card p-4 shadow-card">
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-muted text-4xl">
+                      {srv.emoji}
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-lg font-bold text-foreground">{srv.name}</p>
+                      <p className="mt-0.5 text-sm text-muted-foreground">{srv.desc}</p>
+                      <p className="mt-1 text-xl font-bold text-accent">
+                        {srv.price === 0 ? "免费体验" : `¥ ${srv.price}`}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() =>
+                      toast.success(`已预约：${srv.name}`, {
+                        description: "已选明天 10:00 到店，提醒已加入消息中心",
+                      })
+                    }
+                    className="mt-3 flex min-h-[56px] w-full items-center justify-center gap-2 rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-soft active:scale-[0.98]"
+                  >
+                    <CalendarCheck className="h-6 w-6" />
+                    立即预约
+                  </button>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          {/* 在售商品 / 服务包 */}
+          <div>
+            <h3 className="mb-2 flex items-center gap-2 text-base font-bold text-foreground">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-xs text-white">2</span>
+              在售商品 & 服务包
+            </h3>
+            <div className="space-y-3">
+              {s.packages.map((pkg) => (
+                <article key={pkg.name} className="rounded-2xl bg-card p-4 shadow-card">
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-muted text-4xl">
+                      {pkg.emoji}
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-lg font-bold text-foreground">{pkg.name}</p>
+                      <p className="mt-0.5 text-sm text-muted-foreground">{pkg.desc}</p>
+                      <div className="mt-1 flex items-baseline gap-2">
+                        <span className="text-xl font-bold text-accent">¥ {pkg.price}</span>
+                        {pkg.original && (
+                          <span className="text-sm text-muted-foreground line-through">¥ {pkg.original}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() =>
+                        toast.success(`已加入购物车：${pkg.name}`, {
+                          description: "可在购物车统一结算，到店自提",
+                        })
+                      }
+                      className="flex min-h-[52px] items-center justify-center gap-1.5 rounded-2xl bg-muted text-base font-bold text-foreground shadow-sm active:scale-[0.98]"
+                    >
+                      <ShoppingCart className="h-5 w-5" />
+                      加购
+                    </button>
+                    <button
+                      onClick={() =>
+                        toast.success(`已预约：${pkg.name}`, {
+                          description: "到店后出示订单即可使用",
+                        })
+                      }
+                      className="flex min-h-[52px] items-center justify-center gap-1.5 rounded-2xl bg-primary text-base font-bold text-primary-foreground shadow-soft active:scale-[0.98]"
+                    >
+                      <CalendarCheck className="h-5 w-5" />
+                      购买/预约
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
       )}
 

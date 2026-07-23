@@ -226,7 +226,7 @@ function HomePage() {
             </button>
             <button
               onClick={() => setShowGroupQR(true)}
-              aria-label="加入病友群"
+              aria-label="加入专属服务群"
               className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
             >
               <Users className="h-6 w-6 text-primary" />
