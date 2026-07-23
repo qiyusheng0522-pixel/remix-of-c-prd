@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
+import doctorAvatar from "@/assets/doctor-avatar-3d.png";
 
 
 
@@ -294,8 +295,22 @@ function HomePage() {
           </div>
         </section>
 
+        {/* 3D 电子医生形象 · 填充中部空白 */}
+        <div className="pointer-events-none relative z-0 mx-5 mt-2 flex flex-1 items-center justify-center overflow-hidden">
+          <img
+            src={doctorAvatar}
+            alt="蜻蜓电子医生"
+            width={1024}
+            height={1024}
+            loading="lazy"
+            className="h-full max-h-[360px] w-auto object-contain drop-shadow-[0_20px_30px_rgba(16,120,90,0.18)]"
+            style={{ animation: "doctorFloat 4s ease-in-out infinite" }}
+          />
+          <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}`}</style>
+        </div>
+
         {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
-        <div className="relative z-20 mt-auto flex flex-col items-center border-t border-border/40 bg-white/85 px-5 pb-3 pt-3 backdrop-blur-md">
+        <div className="relative z-20 flex flex-col items-center border-t border-border/40 bg-white/85 px-5 pb-3 pt-3 backdrop-blur-md">
           <style>{`@keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}`}</style>
           <div className="mb-2 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center gap-2 pb-0.5">
