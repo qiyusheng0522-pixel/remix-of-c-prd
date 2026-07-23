@@ -196,18 +196,18 @@ function HomePage() {
 
   return (
     <MobileLayout>
-      <div className="relative flex min-h-[calc(100dvh-72px)] flex-1 flex-col sm:min-h-0">
+      <div className="relative flex flex-1 flex-col overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[oklch(0.94_0.04_180)] via-[oklch(0.97_0.025_185)] to-[oklch(0.99_0.01_60)]" />
-        <div className="pointer-events-none absolute bottom-32 left-1/2 h-40 w-72 -translate-x-1/2 rounded-[50%] bg-primary/15 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-20 left-1/2 h-32 w-56 -translate-x-1/2 rounded-[50%] bg-primary/15 blur-3xl" />
 
         {/* 顶部 */}
-        <header className="relative z-10 flex items-center justify-between px-6 pt-10">
+        <header className="relative z-10 flex items-center justify-between px-5 pt-4">
           <div>
-            <p className="text-base text-muted-foreground">{greeting}</p>
-            <h1 className="mt-0.5 text-2xl font-bold text-foreground">王阿姨</h1>
+            <p className="text-sm text-muted-foreground">{greeting}</p>
+            <h1 className="text-xl font-bold text-foreground">王阿姨</h1>
             <button
               onClick={() => navigate({ to: "/partners" })}
-              className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground active:opacity-70"
+              className="mt-0.5 flex items-center gap-1.5 text-[10px] text-muted-foreground active:opacity-70"
             >
               <span className="whitespace-nowrap rounded-full bg-success/15 px-1.5 py-0.5 font-bold text-success">
                 权威背书
@@ -219,69 +219,69 @@ function HomePage() {
             <button
               onClick={() => setShowTutorial(true)}
               aria-label="新手教学视频"
-              className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
             >
-              <PlayCircle className="h-6 w-6 text-primary" />
+              <PlayCircle className="h-5 w-5 text-primary" />
               <span className="absolute -right-0.5 -top-0.5 rounded-full bg-warm px-1 py-0.5 text-[9px] font-bold text-white shadow" style={{background:"linear-gradient(90deg,#ff8a3d,#ff5a7a)"}}>教学</span>
             </button>
             <button
               onClick={() => setShowGroupQR(true)}
               aria-label="加入专属服务群"
-              className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
             >
-              <Users className="h-6 w-6 text-primary" />
+              <Users className="h-5 w-5 text-primary" />
               <span className="absolute -right-0.5 -top-0.5 rounded-full bg-success px-1 py-0.5 text-[9px] font-bold text-white shadow">入群</span>
             </button>
           </div>
         </header>
 
-        {/* 对话气泡 · 消息 + 操作一体化 · 适老放大版 */}
-        <section className="relative z-10 mx-5 mt-4">
+        {/* 对话气泡 · 消息 + 操作一体化 */}
+        <section className="relative z-10 mx-4 mt-2">
           <div
             key={bubbleKey}
-            className="relative rounded-[28px] rounded-bl-md bg-white px-5 py-4 shadow-elevated"
+            className="relative rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-elevated"
             style={{ animation: "bubblePop 0.45s cubic-bezier(.34,1.56,.64,1)" }}
           >
-            <div className="mb-2 flex items-center gap-2.5">
-              <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-success" />
-              <span className="text-base font-semibold text-primary">蜻蜓医生</span>
-              <span className="ml-auto rounded-full bg-primary-soft px-3 py-1 text-[13px] font-semibold text-primary">
+            <div className="mb-1.5 flex items-center gap-2">
+              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-success" />
+              <span className="text-sm font-semibold text-primary">蜻蜓医生</span>
+              <span className="ml-auto rounded-full bg-primary-soft px-2.5 py-0.5 text-[11px] font-semibold text-primary">
                 {msg.category}
               </span>
             </div>
-            <p className="whitespace-pre-line text-[18px] font-semibold leading-[1.5] text-foreground">
+            <p className="whitespace-pre-line text-[15px] font-semibold leading-[1.45] text-foreground">
               {msg.text}
-              <span className="ml-1 inline-block h-5 w-0.5 translate-y-1 animate-pulse bg-primary align-middle" />
+              <span className="ml-1 inline-block h-4 w-0.5 translate-y-0.5 animate-pulse bg-primary align-middle" />
             </p>
             {/* 操作区：主按钮 + 等会儿 + 说话 */}
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-2.5 flex items-center gap-2">
               <button
                 onClick={handleDone}
-                className="flex min-h-[52px] flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-4 text-[15px] font-bold text-primary-foreground shadow-card active:scale-[0.97]"
+                className="flex h-11 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-primary px-4 text-sm font-bold text-primary-foreground shadow-card active:scale-[0.97]"
               >
-                <Icon className="h-5 w-5" strokeWidth={2.5} />
+                <Icon className="h-4 w-4" strokeWidth={2.5} />
                 {msg.action}
               </button>
               <button
                 onClick={handleLater}
                 aria-label="稍后再说"
-                className="flex h-[52px] shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-4 text-sm font-semibold text-muted-foreground shadow-card active:scale-95"
+                className="flex h-11 shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-3 text-sm font-semibold text-muted-foreground shadow-card active:scale-95"
               >
-                <Clock className="h-5 w-5" />
+                <Clock className="h-4 w-4" />
                 稍后
               </button>
               <button
                 onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
                 aria-label="对蜻蜓说话"
-                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-warm text-white shadow-card active:scale-95"
               >
-                <Mic className="h-6 w-6" />
+                <Mic className="h-5 w-5" />
               </button>
             </div>
           </div>
-          <div className="ml-6 -mt-px h-0 w-0 border-l-[16px] border-r-[16px] border-t-[16px] border-l-transparent border-r-transparent border-t-white drop-shadow-sm" />
+          <div className="ml-6 -mt-px h-0 w-0 border-l-[14px] border-r-[14px] border-t-[14px] border-l-transparent border-r-transparent border-t-white drop-shadow-sm" />
           {/* 消息切换指示点 */}
-          <div className="mt-2 flex justify-center gap-1.5">
+          <div className="mt-1.5 flex justify-center gap-1.5">
             {messages.map((_, i) => (
               <button
                 key={i}
@@ -295,24 +295,24 @@ function HomePage() {
           </div>
         </section>
 
-        {/* 3D 电子医生形象 · 填充中部空白 */}
-        <div className="pointer-events-none relative z-0 mx-5 mt-2 flex flex-1 items-center justify-center overflow-hidden">
+        {/* 3D 电子医生形象 · 中部点缀 */}
+        <div className="pointer-events-none relative z-0 mx-5 mt-1 flex flex-1 items-center justify-center overflow-hidden">
           <img
             src={doctorAvatar}
             alt="蜻蜓电子医生"
             width={1024}
             height={1024}
             loading="lazy"
-            className="h-full max-h-[360px] w-auto object-contain drop-shadow-[0_20px_30px_rgba(16,120,90,0.18)]"
+            className="h-full max-h-[150px] w-auto object-contain drop-shadow-[0_16px_24px_rgba(16,120,90,0.16)]"
             style={{ animation: "doctorFloat 4s ease-in-out infinite" }}
           />
-          <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}`}</style>
+          <style>{`@keyframes doctorFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}`}</style>
         </div>
 
-        {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
-        <div className="relative z-20 flex flex-col items-center border-t border-border/40 bg-white/85 px-5 pb-3 pt-3 backdrop-blur-md">
+        {/* AI 快捷入口 + 输入框 · 底部固定区 */}
+        <div className="relative z-20 flex flex-col items-center border-t border-border/40 bg-white/85 px-4 pb-2 pt-2 backdrop-blur-md">
           <style>{`@keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}`}</style>
-          <div className="mb-2 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="mb-1.5 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center gap-2 pb-0.5">
               {aiShortcuts.map((s) => {
                 const SIcon = s.icon;
@@ -320,9 +320,9 @@ function HomePage() {
                   <button
                     key={s.label}
                     onClick={() => navigate({ to: s.to })}
-                    className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold text-foreground shadow-sm active:scale-95"
+                    className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm active:scale-95"
                   >
-                    <SIcon className="h-4 w-4 text-primary" strokeWidth={2.5} />
+                    <SIcon className="h-3.5 w-3.5 text-primary" strokeWidth={2.5} />
                     {s.label}
                   </button>
                 );
@@ -338,50 +338,50 @@ function HomePage() {
             }}
             className="w-full"
           >
-            <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 shadow-card focus-within:ring-2 focus-within:ring-primary/20">
-              <Sparkles className="h-5 w-5 shrink-0 text-primary" />
+            <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-card focus-within:ring-2 focus-within:ring-primary/20">
+              <Sparkles className="h-4 w-4 shrink-0 text-primary" />
               <input
                 value={aiInput}
                 onChange={(e) => setAiInput(e.target.value)}
                 placeholder="AI 助手 · 和我聊一聊"
-                className="flex-1 bg-transparent text-[15px] font-medium text-foreground outline-none placeholder:text-muted-foreground"
+                className="flex-1 bg-transparent text-sm font-medium text-foreground outline-none placeholder:text-muted-foreground"
               />
               <button
                 type="button"
                 onClick={() => toast.success("蜻蜓在听～", { description: "请说出您想问的健康问题" })}
                 aria-label="语音输入"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted active:scale-95"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted active:scale-95"
               >
-                <Mic className="h-4 w-4 text-foreground" />
+                <Mic className="h-3.5 w-3.5 text-foreground" />
               </button>
               <button
                 type="submit"
                 aria-label={aiInput.trim() ? "发送" : "拍照问蜻蜓"}
                 className={cn(
-                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-full active:scale-95",
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full active:scale-95",
                   aiInput.trim()
                     ? "bg-primary text-primary-foreground shadow-card"
                     : "bg-muted text-foreground",
                 )}
               >
-                {aiInput.trim() ? <Send className="h-4 w-4" /> : <Camera className="h-4 w-4" />}
+                {aiInput.trim() ? <Send className="h-3.5 w-3.5" /> : <Camera className="h-3.5 w-3.5" />}
               </button>
             </div>
-            <p className="mt-1 text-center text-[11px] text-muted-foreground">大模型驱动 · 24 小时在线陪伴</p>
+            <p className="mt-0.5 text-center text-[10px] text-muted-foreground">大模型驱动 · 24 小时在线陪伴</p>
           </form>
         </div>
       </div>
 
-      {/* 悬浮 · 数字中医人（左下角固定入口） */}
+      {/* 悬浮 · 数字中医人（左下角入口） */}
       <button
         onClick={() => navigate({ to: "/health/tcm" })}
         aria-label="数字中医人"
-        className="fixed bottom-28 left-3 z-40 flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-2 pl-2 pr-3 shadow-elevated active:scale-95"
+        className="absolute bottom-20 left-3 z-40 flex items-center gap-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 py-1.5 pl-1.5 pr-2.5 shadow-elevated active:scale-95"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/25">
-          <Leaf className="h-5 w-5 text-white" strokeWidth={2.5} />
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/25">
+          <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
         </span>
-        <span className="whitespace-nowrap text-xs font-bold text-white">数字中医人</span>
+        <span className="whitespace-nowrap text-[11px] font-bold text-white">数字中医人</span>
       </button>
 
       {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
