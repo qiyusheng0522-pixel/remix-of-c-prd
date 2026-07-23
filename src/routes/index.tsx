@@ -214,24 +214,22 @@ function HomePage() {
             </button>
           </div>
           <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowTutorial(true)}
-            aria-label="新手教学视频"
-            className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
-          >
-            <PlayCircle className="h-6 w-6 text-primary" />
-            <span className="absolute -right-0.5 -top-0.5 rounded-full bg-warm px-1 py-0.5 text-[9px] font-bold text-white shadow" style={{background:"linear-gradient(90deg,#ff8a3d,#ff5a7a)"}}>教学</span>
-          </button>
-          <button
-            onClick={() => navigate({ to: "/messages" })}
-            aria-label="消息中心"
-            className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
-          >
-            <Bell className="h-6 w-6 text-foreground" />
-            <span className="absolute right-2.5 top-2.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-white ring-2 ring-white">
-              5
-            </span>
-          </button>
+            <button
+              onClick={() => setShowTutorial(true)}
+              aria-label="新手教学视频"
+              className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
+            >
+              <PlayCircle className="h-6 w-6 text-primary" />
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-warm px-1 py-0.5 text-[9px] font-bold text-white shadow" style={{background:"linear-gradient(90deg,#ff8a3d,#ff5a7a)"}}>教学</span>
+            </button>
+            <button
+              onClick={() => setShowGroupQR(true)}
+              aria-label="加入病友群"
+              className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
+            >
+              <Users className="h-6 w-6 text-primary" />
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-success px-1 py-0.5 text-[9px] font-bold text-white shadow">入群</span>
+            </button>
           </div>
         </header>
 
