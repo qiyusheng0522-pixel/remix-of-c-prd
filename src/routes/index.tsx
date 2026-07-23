@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  Bell,
   Mic,
   Clock,
   Pill,
@@ -20,6 +19,7 @@ import {
   X,
   ScanLine,
   Send,
+  Users,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -27,7 +27,6 @@ import { toast } from "sonner";
 import { MobileLayout } from "@/components/MobileLayout";
 import { ShareButton } from "@/components/ShareButton";
 import { logoutAdmin } from "@/admin/auth";
-import { Users } from "lucide-react";
 
 
 
@@ -168,6 +167,7 @@ function HomePage() {
   const [greeting, setGreeting] = useState("您好");
   const [bubbleKey, setBubbleKey] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showGroupQR, setShowGroupQR] = useState(false);
   const [aiInput, setAiInput] = useState("");
 
   useEffect(() => {
@@ -215,24 +215,22 @@ function HomePage() {
             </button>
           </div>
           <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowTutorial(true)}
-            aria-label="新手教学视频"
-            className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
-          >
-            <PlayCircle className="h-6 w-6 text-primary" />
-            <span className="absolute -right-0.5 -top-0.5 rounded-full bg-warm px-1 py-0.5 text-[9px] font-bold text-white shadow" style={{background:"linear-gradient(90deg,#ff8a3d,#ff5a7a)"}}>教学</span>
-          </button>
-          <button
-            onClick={() => navigate({ to: "/messages" })}
-            aria-label="消息中心"
-            className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
-          >
-            <Bell className="h-6 w-6 text-foreground" />
-            <span className="absolute right-2.5 top-2.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-white ring-2 ring-white">
-              5
-            </span>
-          </button>
+            <button
+              onClick={() => setShowTutorial(true)}
+              aria-label="新手教学视频"
+              className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
+            >
+              <PlayCircle className="h-6 w-6 text-primary" />
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-warm px-1 py-0.5 text-[9px] font-bold text-white shadow" style={{background:"linear-gradient(90deg,#ff8a3d,#ff5a7a)"}}>教学</span>
+            </button>
+            <button
+              onClick={() => setShowGroupQR(true)}
+              aria-label="加入病友群"
+              className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
+            >
+              <Users className="h-6 w-6 text-primary" />
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-success px-1 py-0.5 text-[9px] font-bold text-white shadow">入群</span>
+            </button>
           </div>
         </header>
 
@@ -294,34 +292,6 @@ function HomePage() {
               />
             ))}
           </div>
-        </section>
-
-        {/* 加群 · 问专家 · 显著入口 */}
-        <section className="relative z-10 mx-5 mt-2 grid grid-cols-2 gap-2">
-          <button
-            onClick={() => navigate({ to: "/circle" })}
-            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <Users className="h-5 w-5" strokeWidth={2.5} />
-            </span>
-            <div className="flex-1">
-              <div className="text-[14px] font-bold leading-tight">入群</div>
-              <div className="mt-0.5 text-[10px] opacity-90">同病相伴 · 互助打卡</div>
-            </div>
-          </button>
-          <button
-            onClick={() => navigate({ to: "/experts" })}
-            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <Stethoscope className="h-5 w-5" strokeWidth={2.5} />
-            </span>
-            <div className="flex-1">
-              <div className="text-[14px] font-bold leading-tight">寻医</div>
-              <div className="mt-0.5 text-[10px] opacity-90">三甲医生 · 一对一答疑</div>
-            </div>
-          </button>
         </section>
 
         {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
@@ -400,6 +370,7 @@ function HomePage() {
       </button>
 
       {showTutorial && <TutorialModal onClose={() => setShowTutorial(false)} />}
+      {showGroupQR && <GroupQRModal onClose={() => setShowGroupQR(false)} />}
 
     </MobileLayout>
   );
@@ -455,6 +426,69 @@ function TutorialModal({ onClose }: { onClose: () => void }) {
             </button>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function GroupQRModal({ onClose }: { onClose: () => void }) {
+  const qrCells = [
+    [1,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1],
+    [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1,0,0,1,0,1,1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+    [1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1],
+    [0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [1,0,1,1,0,1,0,1,1,0,1,0,1,1,0,1,0,1,1],
+    [0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0],
+    [1,0,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1,0,1],
+    [0,1,0,1,0,1,0,0,1,0,1,0,1,0,0,1,0,1,0],
+    [0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,1,1,1,1,1,1,0,0,1,0,1,0,1,0,1,0,1,0],
+    [1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,1,1,1,0,1,0,0,1,0,1,0,1,0,1,0,1,0],
+    [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,0,0,0,0,1,0,0,1,0,1,0,1,0,1,0,1,0],
+    [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1],
+  ];
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="w-full max-w-md rounded-t-3xl bg-white p-5 shadow-elevated"
+        style={{ animation: "bubblePop 0.35s cubic-bezier(.34,1.56,.64,1)" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-bold">加入病友群</h3>
+            <p className="text-xs text-muted-foreground">扫码进群，和同病相怜的伙伴互助打卡</p>
+          </div>
+          <button onClick={onClose} aria-label="关闭" className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="mb-4 flex flex-col items-center rounded-2xl bg-muted/40 p-5">
+          <div className="grid gap-0.5 rounded-lg bg-white p-3 shadow-card" style={{ gridTemplateColumns: `repeat(${qrCells[0].length}, minmax(0, 1fr))` }}>
+            {qrCells.map((row, r) =>
+              row.map((cell, c) => (
+                <div
+                  key={`${r}-${c}`}
+                  className={`aspect-square w-4 sm:w-5 ${cell ? "bg-foreground" : "bg-white"}`}
+                />
+              ))
+            )}
+          </div>
+          <p className="mt-3 text-sm font-semibold text-foreground">蜻蜓健康 · 糖友互助群</p>
+          <p className="text-xs text-muted-foreground">微信扫一扫，立即加入</p>
+        </div>
+        <button
+          onClick={() => { toast.success("已保存二维码到相册"); onClose(); }}
+          className="w-full rounded-full bg-primary py-3.5 text-base font-bold text-primary-foreground shadow-card active:scale-[0.98]"
+        >
+          保存到相册
+        </button>
       </div>
     </div>
   );
