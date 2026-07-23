@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  Bell,
   Mic,
   Clock,
   Pill,
@@ -20,6 +19,7 @@ import {
   X,
   ScanLine,
   Send,
+  Users,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
