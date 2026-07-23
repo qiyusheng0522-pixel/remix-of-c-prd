@@ -304,7 +304,7 @@ function HomePage() {
               <Users className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <div className="flex-1">
-              <div className="text-[14px] font-bold leading-tight">加入病友群</div>
+              <div className="text-[14px] font-bold leading-tight">入群</div>
               <div className="mt-0.5 text-[10px] opacity-90">同病相伴 · 互助打卡</div>
             </div>
           </button>
@@ -313,10 +313,10 @@ function HomePage() {
             className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <MessageSquarePlus className="h-5 w-5" strokeWidth={2.5} />
+              <Stethoscope className="h-5 w-5" strokeWidth={2.5} />
             </span>
             <div className="flex-1">
-              <div className="text-[14px] font-bold leading-tight">问专家</div>
+              <div className="text-[14px] font-bold leading-tight">寻医</div>
               <div className="mt-0.5 text-[10px] opacity-90">三甲医生 · 一对一答疑</div>
             </div>
           </button>
