@@ -294,34 +294,6 @@ function HomePage() {
           </div>
         </section>
 
-        {/* 加群 · 问专家 · 显著入口 */}
-        <section className="relative z-10 mx-5 mt-2 grid grid-cols-2 gap-2">
-          <button
-            onClick={() => navigate({ to: "/circle" })}
-            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <Users className="h-5 w-5" strokeWidth={2.5} />
-            </span>
-            <div className="flex-1">
-              <div className="text-[14px] font-bold leading-tight">入群</div>
-              <div className="mt-0.5 text-[10px] opacity-90">同病相伴 · 互助打卡</div>
-            </div>
-          </button>
-          <button
-            onClick={() => navigate({ to: "/experts" })}
-            className="flex items-center gap-2.5 rounded-2xl bg-gradient-to-br from-sky-500 to-primary px-3 py-2.5 text-left text-white shadow-elevated active:scale-[0.98]"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/25">
-              <Stethoscope className="h-5 w-5" strokeWidth={2.5} />
-            </span>
-            <div className="flex-1">
-              <div className="text-[14px] font-bold leading-tight">寻医</div>
-              <div className="mt-0.5 text-[10px] opacity-90">三甲医生 · 一对一答疑</div>
-            </div>
-          </button>
-        </section>
-
         {/* AI 快捷入口 + 输入框 · 填充剩余区域 */}
         <div className="relative z-20 mt-auto flex flex-col items-center border-t border-border/40 bg-white/85 px-5 pb-3 pt-3 backdrop-blur-md">
           <style>{`@keyframes bubblePop{0%{transform:translateY(-8px) scale(0.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}`}</style>
