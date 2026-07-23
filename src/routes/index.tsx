@@ -167,6 +167,7 @@ function HomePage() {
   const [greeting, setGreeting] = useState("您好");
   const [bubbleKey, setBubbleKey] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showGroupQR, setShowGroupQR] = useState(false);
   const [aiInput, setAiInput] = useState("");
 
   useEffect(() => {
