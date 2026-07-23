@@ -226,7 +226,7 @@ function HomePage() {
             </button>
             <button
               onClick={() => setShowGroupQR(true)}
-              aria-label="加入病友群"
+              aria-label="加入专属服务群"
               className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/70 shadow-card backdrop-blur-md active:scale-95"
             >
               <Users className="h-6 w-6 text-primary" />
@@ -477,14 +477,14 @@ function GroupQRModal({ onClose }: { onClose: () => void }) {
       >
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold">加入病友群</h3>
-            <p className="text-xs text-muted-foreground">扫码进群，和同病相怜的伙伴互助打卡</p>
+            <h3 className="text-lg font-bold">加入专属服务群</h3>
+            <p className="text-xs text-muted-foreground">1 对 1 在线服务，24 小时为您答疑解惑</p>
           </div>
           <button onClick={onClose} aria-label="关闭" className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="mb-4 flex flex-col items-center rounded-2xl bg-muted/40 p-5">
+        <div className="mb-4 flex flex-col items-center rounded-2xl bg-primary-soft/60 p-5">
           <div className="grid gap-0.5 rounded-lg bg-white p-3 shadow-card" style={{ gridTemplateColumns: `repeat(${qrCells[0].length}, minmax(0, 1fr))` }}>
             {qrCells.map((row, r) =>
               row.map((cell, c) => (
@@ -495,8 +495,8 @@ function GroupQRModal({ onClose }: { onClose: () => void }) {
               ))
             )}
           </div>
-          <p className="mt-3 text-sm font-semibold text-foreground">蜻蜓健康 · 糖友互助群</p>
-          <p className="text-xs text-muted-foreground">微信扫一扫，立即加入</p>
+          <p className="mt-3 text-sm font-semibold text-foreground">蜻蜓健康 · 专属服务群</p>
+          <p className="text-xs text-muted-foreground">微信扫一扫，健康管家随时在线</p>
         </div>
         <button
           onClick={() => { toast.success("已保存二维码到相册"); onClose(); }}
